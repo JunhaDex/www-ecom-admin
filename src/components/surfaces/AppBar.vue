@@ -3,7 +3,7 @@
     <div class="flex justify-between items-center p-4">
       <!-- Left side - Menu Button -->
       <div class="flex items-center">
-        <IconButton :prefix-icon="MenuIcon" class="btn-ghost" />
+        <IconButton :prefix-icon="MenuIcon" class="btn-ghost" @click="toggleSideMenu" />
         <h2 class="ml-4 text-xl font-bold">Dashboard</h2>
       </div>
 
@@ -33,13 +33,21 @@
       </Dropdown>
     </div>
   </header>
-  <!--TODO: Menu Component-->
+  <SideMenu :is-open="sideMenuOpen" @close-menu="toggleSideMenu" />
 </template>
 <script setup lang="ts">
 import IconButton from '@/components/inputs/IconButton.vue'
 import MenuIcon from '@/assets/icons/menu.svg'
 import UserAvatar from '@/components/display/UserAvatar.vue'
 import Dropdown from '@/components/inputs/Dropdown.vue'
+import SideMenu from '@/components/navigations/SideMenu.vue'
+import { ref } from 'vue'
+
+const sideMenuOpen = ref(false)
+
+function toggleSideMenu() {
+  sideMenuOpen.value = !sideMenuOpen.value
+}
 </script>
 <style scoped>
 li {

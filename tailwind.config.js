@@ -8,8 +8,8 @@ export default {
       warning: '#faca15',
       danger: '#c81e1e',
       success: '#1a56db',
-      natural: '#F4F4F6',
-      background: '#F4F4F6',
+      natural: '#FAFAFA',
+      background: '#F2F2F2',
       white: '#ffffff',
       black: '#000000',
       gray: {

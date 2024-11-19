@@ -31,4 +31,7 @@
     --v-success-darkest: hsl(from var(--v-success) h s calc(l - 10));
     --v-success-lighter: hsl(from var(--v-success) h s calc(l + 5));
     --v-success-lightest: hsl(from var(--v-success) h s calc(l + 10));
+    /* Layout */
+    --header-height: 80px;
+    --footer-height: 44px;
 }
