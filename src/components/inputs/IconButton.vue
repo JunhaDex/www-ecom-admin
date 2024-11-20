@@ -1,5 +1,5 @@
 <template>
-  <button class="btn">
+  <button class="btn" :disabled="disabled">
     <i v-if="prefixIcon" class="icon" :style="prefixIconStyle"></i>
     <slot />
     <i v-if="suffixIcon" class="icon" :style="suffixIconStyle"></i>
@@ -11,6 +11,7 @@ import { computed } from 'vue'
 const props = defineProps<{
   prefixIcon?: string
   suffixIcon?: string
+  disabled?: boolean
 }>()
 const prefixIconStyle = computed(() => ({
   '--icon-url': props.prefixIcon ? `url(${props.prefixIcon})` : 'none',

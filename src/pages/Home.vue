@@ -1,11 +1,5 @@
 <template>
   <AppBar />
-  <!-- Sidebar Backdrop -->
-  <div
-    id="sidebarBackdrop"
-    class="fixed inset-0 bg-black opacity-0 invisible transition-opacity z-30"
-  ></div>
-
   <!-- Main Content -->
   <SafeArea>
     <div class="py-8">
@@ -30,11 +24,11 @@
           <button class="btn btn-primary">추가하기</button>
         </div>
       </div>
-      <div class="w-full overflow-x-auto">
+      <div class="table-container w-full overflow-x-auto">
         <table class="table w-full whitespace-nowrap">
           <thead>
             <tr>
-              <th>
+              <th class="w-16">
                 <input class="input-check" type="checkbox" />
               </th>
               <th>Name</th>
@@ -43,9 +37,9 @@
               <th>Actions</th>
             </tr>
           </thead>
-          <tbody>
-            <tr>
-              <td>
+          <tbody v-if="itemList.length">
+            <tr v-for="(item, key) in itemList" :key="key">
+              <td class="w-16">
                 <input class="input-check" type="checkbox" />
               </td>
               <td>John Doe</td>
@@ -57,32 +51,33 @@
             </tr>
           </tbody>
         </table>
-        <div class="pagination bg-natural px-6 py-4">
-          <div class="pagination-info">Showing 1 of 100 pages</div>
-          <ul class="pagination-controls">
-            <li>
-              <button class="page-btn" disabled>Previous</button>
-            </li>
-            <li>
-              <button class="page-btn page-btn-active">1</button>
-            </li>
-            <li>
-              <button class="page-btn">2</button>
-            </li>
-            <li>
-              <button class="page-btn">3</button>
-            </li>
-            <li>
-              <span class="page-ellipsis">...</span>
-            </li>
-            <li>
-              <button class="page-btn">100</button>
-            </li>
-            <li>
-              <button class="page-btn">Next</button>
-            </li>
-          </ul>
-        </div>
+        <div class="table-empty">noting to show</div>
+      </div>
+      <div class="pagination bg-natural px-6 py-4">
+        <div class="pagination-info">Showing 1 of 100 pages</div>
+        <ul class="pagination-controls">
+          <li>
+            <IconButton class="btn-sm" :prefix-icon="BackIcon" />
+          </li>
+          <li>
+            <button class="btn btn-secondary" disabled>1</button>
+          </li>
+          <li>
+            <button class="btn">2</button>
+          </li>
+          <li>
+            <button class="btn">3</button>
+          </li>
+          <li>
+            <span class="page-ellipsis">...</span>
+          </li>
+          <li>
+            <button class="btn">100</button>
+          </li>
+          <li>
+            <IconButton class="btn-sm" :prefix-icon="ForwardIcon" />
+          </li>
+        </ul>
       </div>
     </Card>
   </SafeArea>
@@ -93,13 +88,32 @@ import AppBar from '@/components/surfaces/AppBar.vue'
 import AppFooter from '@/components/surfaces/AppFooter.vue'
 import SafeArea from '@/components/layouts/SafeArea.vue'
 import Card from '@/components/surfaces/Card.vue'
+import { ref } from 'vue'
+import BackIcon from '@/assets/icons/back.svg'
+import ForwardIcon from '@/assets/icons/forward.svg'
+import IconButton from '@/components/inputs/IconButton.vue'
+
+const itemList = ref([])
 </script>
 <style scoped>
+.table-empty {
+  display: flex;
+  min-height: 25vh;
+  justify-content: center;
+  align-items: center;
+}
+
 .table {
+  min-width: 768px;
   width: 100%;
   border-collapse: collapse;
   background-color: #ffffff;
   border-top: 1px solid #e5e7eb;
+
+  tbody {
+    display: block;
+    min-height: 25vh;
+  }
 
   & th,
   & td {
@@ -115,6 +129,10 @@ import Card from '@/components/surfaces/Card.vue'
   }
 
   & tr {
+    display: table;
+    width: 100%;
+    table-layout: fixed;
+
     &:hover {
       background-color: #f9fafb;
     }
