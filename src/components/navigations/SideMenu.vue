@@ -10,10 +10,13 @@
     <!-- Sidebar Content -->
     <nav class="w-64 bg-white shadow-lg h-full pt-16">
       <div class="px-4 py-2">
-        <a href="#" class="menu-item">Dashboard</a>
-        <a href="#" class="menu-item">Analytics</a>
-        <a href="#" class="menu-item">Reports</a>
-        <a href="#" class="menu-item">Settings</a>
+        <router-link :to="{ name: 'home' }" class="menu-item">대시보드</router-link>
+        <router-link :to="{ name: 'user-list' }" class="menu-item">가맹점 계정관리</router-link>
+        <router-link :to="{ name: 'product-list' }" class="menu-item">판매 상품관리</router-link>
+        <router-link :to="{ name: 'order-list' }" class="menu-item">주문 관리</router-link>
+        <router-link :to="{ name: 'payment-list' }" class="menu-item">결제 관리</router-link>
+        <router-link :to="{ name: 'shipment-list' }" class="menu-item">배송 관리</router-link>
+        <router-link :to="{ name: 'carrier-list' }" class="menu-item">배송사 등록</router-link>
       </div>
     </nav>
   </aside>

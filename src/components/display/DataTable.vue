@@ -11,7 +11,7 @@
             <th class="w-16">
               <input class="input-check" type="checkbox" />
             </th>
-            <th v-for="column in columns" :key="column">{{ column }}</th>
+            <th v-for="column in columns" :key="column" class="w-24">{{ column }}</th>
             <th v-if="hasActions">Actions</th>
           </tr>
         </thead>

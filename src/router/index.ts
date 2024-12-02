@@ -48,6 +48,28 @@ const router = createRouter({
       ],
     },
     {
+      path: '/payment',
+      redirect: '/payment/list',
+      children: [
+        {
+          path: 'list',
+          name: 'payment-list',
+          component: () => import('@/pages/payment/List.vue'),
+        },
+      ],
+    },
+    {
+      path: '/shipment',
+      redirect: '/shipment/list',
+      children: [
+        {
+          path: 'list',
+          name: 'shipment-list',
+          component: () => import('@/pages/shipment/List.vue'),
+        },
+      ],
+    },
+    {
       path: '/carrier',
       redirect: '/carrier/list',
       children: [

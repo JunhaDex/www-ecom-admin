@@ -19,65 +19,81 @@
     </div>
     <Card class="bg-white shadow-sm">
       <div class="p-6 bg-natural">
-        <h2 class="text-xl font-semibold mb-4">Table</h2>
-        <div class="flex">
-          <button class="btn btn-primary">추가하기</button>
-        </div>
+        <h2 class="text-xl font-semibold">Table</h2>
       </div>
       <div class="table-container w-full overflow-x-auto">
         <table class="table w-full whitespace-nowrap">
           <thead>
             <tr>
-              <th class="w-16">
-                <input class="input-check" type="checkbox" />
+              <th>지점명</th>
+              <th>
+                <div class="border-b-2">상품1</div>
+                <div class="flex">
+                  <span class="flex-1 border-r-2">주문총액</span>
+                  <span class="flex-1">수량</span>
+                </div>
               </th>
-              <th>Name</th>
-              <th>Email</th>
-              <th>Role</th>
-              <th>Actions</th>
+              <th>
+                <div class="border-b-2">상품2</div>
+                <div class="flex">
+                  <span class="flex-1 border-r-2">주문총액</span>
+                  <span class="flex-1">수량</span>
+                </div>
+              </th>
+              <th>주문 총액</th>
             </tr>
           </thead>
-          <tbody v-if="itemList.length">
-            <tr v-for="(item, key) in itemList" :key="key">
-              <td class="w-16">
-                <input class="input-check" type="checkbox" />
-              </td>
-              <td>John Doe</td>
-              <td>john@example.com</td>
-              <td>Admin</td>
+          <tbody>
+            <tr>
+              <td>지점 1</td>
               <td>
-                <div class="actions"></div>
+                <div class="flex">
+                  <span class="flex-1 border-r-2">100,000</span>
+                  <span class="flex-1">2</span>
+                </div>
               </td>
+              <td>
+                <div class="flex">
+                  <span class="flex-1 border-r-2">100,000</span>
+                  <span class="flex-1">2</span>
+                </div>
+              </td>
+              <td>200,000</td>
+            </tr>
+            <tr>
+              <td>지점 2</td>
+              <td>
+                <div class="flex">
+                  <span class="flex-1 border-r-2">100,000</span>
+                  <span class="flex-1">2</span>
+                </div>
+              </td>
+              <td>
+                <div class="flex">
+                  <span class="flex-1 border-r-2">100,000</span>
+                  <span class="flex-1">2</span>
+                </div>
+              </td>
+              <td>200,000</td>
+            </tr>
+            <tr class="subtotal">
+              <td>총계</td>
+              <td>
+                <div class="flex">
+                  <span class="flex-1 border-r-2">200,000</span>
+                  <span class="flex-1">4</span>
+                </div>
+              </td>
+              <td>
+                <div class="flex">
+                  <span class="flex-1 border-r-2">200,000</span>
+                  <span class="flex-1">4</span>
+                </div>
+              </td>
+              <td>400,000</td>
             </tr>
           </tbody>
         </table>
-        <div class="table-empty">noting to show</div>
-      </div>
-      <div class="pagination bg-natural px-6 py-4">
-        <div class="pagination-info">Showing 1 of 100 pages</div>
-        <ul class="pagination-controls">
-          <li>
-            <IconButton class="btn-sm" :prefix-icon="BackIcon" />
-          </li>
-          <li>
-            <button class="btn btn-secondary" disabled>1</button>
-          </li>
-          <li>
-            <button class="btn">2</button>
-          </li>
-          <li>
-            <button class="btn">3</button>
-          </li>
-          <li>
-            <span class="page-ellipsis">...</span>
-          </li>
-          <li>
-            <button class="btn">100</button>
-          </li>
-          <li>
-            <IconButton class="btn-sm" :prefix-icon="ForwardIcon" />
-          </li>
-        </ul>
       </div>
     </Card>
   </SafeArea>
@@ -132,6 +148,16 @@ const itemList = ref([])
     display: table;
     width: 100%;
     table-layout: fixed;
+
+    td:first-child {
+      background-color: #f9fafb;
+    }
+
+    &.subtotal {
+      td {
+        background-color: #f9fafb;
+      }
+    }
 
     &:hover {
       background-color: #f9fafb;
