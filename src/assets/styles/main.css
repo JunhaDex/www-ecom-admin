@@ -1,6 +1,25 @@
 @import "reset.css";
 @import "variables.css";
 @import "base.css";
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+.input {
+    width: 100%;
+    border-radius: 4px;
+    border: 1px solid theme('colors.gray.400');
+    background-color: white;
+
+    &:focus {
+        border-color: theme('colors.success');
+    }
+}
+
+.select-box {
+    border-radius: 4px;
+    border: 1px solid theme('colors.gray.400');
+    background-color: white;
+    padding: 0.5rem;
+}

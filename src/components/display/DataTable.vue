@@ -9,18 +9,24 @@
         <thead>
           <tr>
             <th class="w-16">
-              <input class="input-check" type="checkbox" />
+              <input v-model="isCheckAll" class="input-check" type="checkbox" />
             </th>
-            <th v-for="column in columns" :key="column" class="w-24">{{ column }}</th>
+            <th v-for="column in columns" :key="column">{{ column }}</th>
             <th v-if="hasActions">Actions</th>
           </tr>
         </thead>
         <tbody v-if="items.length">
           <tr v-for="(item, key) in items" :key="key">
             <td class="w-16">
-              <input class="input-check" type="checkbox" />
+              <input
+                :ref="(el) => (checkboxes[`${title}_${key}`] = el as HTMLInputElement)"
+                class="input-check"
+                type="checkbox"
+              />
             </td>
-            <td v-for="(entry, idx) in Object.entries(item)" :key="`${key}-${idx}`">{{ entry }}</td>
+            <td v-for="(entry, idx) in Object.values(item)" :key="`${key}-${idx}`">
+              {{ entry === null ? '-' : entry }}
+            </td>
             <td v-if="hasActions">
               <div class="actions">
                 <slot name="actions" />
@@ -48,7 +54,7 @@
             {{ pageNo }}
           </button>
         </li>
-        <li v-if="pageMeta.pageSize > 5">
+        <li v-if="pageMeta.totalPage > 5">
           <span class="page-ellipsis">...</span>
         </li>
         <li v-if="lastPage > 0">
@@ -67,7 +73,7 @@ import type { PageMeta } from '@/types/ui.type'
 import IconButton from '@/components/inputs/IconButton.vue'
 import BackIcon from '@/assets/icons/back.svg'
 import ForwardIcon from '@/assets/icons/forward.svg'
-import { computed } from 'vue'
+import { computed, reactive, ref, watch } from 'vue'
 
 const props = defineProps<{
   title: string
@@ -93,6 +99,14 @@ const lastPage = computed(() => {
 })
 const isFirst = computed(() => props.pageMeta.pageNo === 1)
 const isLast = computed(() => props.pageMeta.pageNo === props.pageMeta.totalPage)
+const checkboxes = reactive<{ [key: string]: HTMLInputElement }>({})
+const isCheckAll = ref(false)
+
+watch(isCheckAll, (value) => {
+  for (const key in checkboxes) {
+    checkboxes[key].checked = value
+  }
+})
 </script>
 <style scoped>
 .table {

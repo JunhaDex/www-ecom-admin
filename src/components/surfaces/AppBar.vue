@@ -1,5 +1,5 @@
 <template>
-  <header class="bg-white shadow-sm fixed w-full top-0 z-20">
+  <header class="bg-white shadow-sm fixed w-full top-0 z-8">
     <div class="flex justify-between items-center p-4">
       <!-- Left side - Menu Button -->
       <div class="flex items-center">

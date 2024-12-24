@@ -6,11 +6,11 @@
   </div>
 </template>
 <script setup lang="ts">
-import type { User } from '@/types/user.type'
+import type { AdminUser } from '@/types/user.type'
 import DownIcon from '@/assets/icons/down.svg'
 
 const props = defineProps<{
-  user: User
+  user: AdminUser
 }>()
 </script>
 <style scoped>

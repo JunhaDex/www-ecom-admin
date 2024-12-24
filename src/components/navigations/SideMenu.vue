@@ -1,5 +1,5 @@
 <template>
-  <aside class="side-menu z-40" :class="{ open: isOpen }">
+  <aside class="side-menu z-9" :class="{ open: isOpen }">
     <!-- Back Button for Mobile -->
     <IconButton
       class="btn-ghost absolute top-4 left-4"
