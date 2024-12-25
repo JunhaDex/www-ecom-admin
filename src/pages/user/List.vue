@@ -33,7 +33,7 @@
         :columns="groupColumns"
         :has-actions="false"
         :items="groups"
-        :page-meta="pageMeta"
+        :page-meta="groupTablePage"
       >
         <template #control>
           <div class="flex justify-end mb-4">
@@ -80,19 +80,14 @@ import type { PageMeta } from '@/types/ui.type'
 import { orderPageItemList } from '@/utils/index.util'
 import InputModal from '@/components/inputs/InputModal.vue'
 import dayjs from 'dayjs'
+import { GroupService } from '@/services/group.service'
 
 const userColumns = ['가맹점명', '아이디', '대표자', '연락처', '유저 그룹', '계정상태', '생성일']
 
 const toggleSetUserGroup = ref(false)
 const groupColumns = ['그룹명', '그룹 설명', '생성일']
 const users = ref([])
-const groups = []
-const pageMeta = {
-  totalCount: 0,
-  pageNo: 1,
-  pageSize: 10,
-  totalPage: 10,
-}
+const groups = ref([])
 
 const userTablePage = ref<PageMeta>({
   totalCount: 0,
@@ -101,7 +96,16 @@ const userTablePage = ref<PageMeta>({
   totalPage: 10,
 })
 
+const groupTablePage = ref<PageMeta>({
+  totalCount: 0,
+  pageNo: 1,
+  pageSize: 10,
+  totalPage: 10,
+})
+
+
 const userSvc = new UserService()
+const groupSvc = new GroupService()
 onMounted(async () => {
   const pageData = await userSvc.listUser()
   userTablePage.value = pageData.meta
@@ -114,6 +118,17 @@ onMounted(async () => {
       }
     }),
     ['branchName', 'userId', 'branchManager', 'branchContact', 'groupName', 'status', 'createdAt'],
+  )
+  const pageGroupData = await groupSvc.listGroup()
+  groupTablePage.value = pageGroupData.meta
+  groups.value = orderPageItemList(
+    pageGroupData.list.map((itm) => {
+      return {
+        ...itm,
+        createdAt: dayjs(itm.createdAt).format('YYYY-MM-DD HH:mm'),
+      }
+    }),
+    ['groupName', 'description', 'createdAt'],
   )
 })
 </script>

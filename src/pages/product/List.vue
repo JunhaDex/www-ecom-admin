@@ -7,7 +7,7 @@
         :columns="columns"
         :has-actions="false"
         :items="products"
-        :page-meta="pageMeta"
+        :page-meta="productTablePage"
       >
         <template #control>
           <div class="flex justify-end">
@@ -24,13 +24,33 @@ import AppBar from '@/components/surfaces/AppBar.vue'
 import SafeArea from '@/components/layouts/SafeArea.vue'
 import AppFooter from '@/components/surfaces/AppFooter.vue'
 import DataTable from '@/components/display/DataTable.vue'
+import { onMounted, ref } from 'vue'
+import { orderPageItemList } from '@/utils/index.util'
+import { ProductService } from '@/services/product.service'
+import type { PageMeta } from '@/types/ui.type'
+import dayjs from 'dayjs'
 
-const columns = ['상품명', '상품설명', '상품 이미지', '가격', '판매상태', '생성일']
-const products = []
-const pageMeta = {
+const columns = ['상품명', '상품설명', '가격', '판매상태', '생성일']
+const products = ref([])
+const productTablePage = ref<PageMeta>({
   totalCount: 0,
   pageNo: 1,
   pageSize: 10,
   totalPage: 10,
-}
+})
+
+const productSvc = new ProductService()
+onMounted(async () => {
+  const productData = await productSvc.listProduct()
+  productTablePage.value = productData.meta
+  products.value = orderPageItemList(
+    productData.list.map((itm) => {
+      return {
+        ...itm,
+        createdAt: dayjs(itm.createdAt).format('YYYY-MM-DD HH:mm'),
+      }
+    }),
+    ['productName', 'description', 'productPrice', 'status','createdAt'],
+  )
+})
 </script>
