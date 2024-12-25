@@ -10,8 +10,16 @@
         :page-meta="productTablePage"
       >
         <template #control>
-          <div class="flex justify-end">
-            <button class="btn btn-primary">상품추가</button>
+          <div class="flex justify-end mb-2">
+            <button class="btn btn-primary">상품 추가</button>
+            <button class="btn btn-danger ml-4">상품 삭제</button>
+          </div>
+          <div class="flex justify-start">
+            <select class="select-box">
+              <option value="name">상품명</option>
+            </select>
+            <input type="text" class="flex-1 input ml-4" placeholder="검색어를 입력하세요" />
+            <button class="btn btn-primary ml-4">검색</button>
           </div>
         </template>
       </DataTable>
