@@ -7,7 +7,7 @@
         :columns="columns"
         :has-actions="false"
         :items="orders"
-        :page-meta="pageMeta"
+        :page-meta="txTablePage"
       >
         <template #control>
           <div class="flex justify-end">
@@ -36,6 +36,11 @@ import AppBar from '@/components/surfaces/AppBar.vue'
 import SafeArea from '@/components/layouts/SafeArea.vue'
 import AppFooter from '@/components/surfaces/AppFooter.vue'
 import DataTable from '@/components/display/DataTable.vue'
+import { onMounted, ref } from 'vue'
+import type { PageMeta } from '@/types/ui.type'
+import { orderPageItemList } from '@/utils/index.util'
+import dayjs from 'dayjs'
+import { TxService } from '@/services/tx.service'
 
 const columns = [
   '주문일',
@@ -45,17 +50,52 @@ const columns = [
   '주문 상태',
   '주문 메모',
   '주문 총액',
-  '배송비',
   '결제총액',
   '결제 승인번호',
   '택배사',
   '송장번호',
 ]
-const orders = []
-const pageMeta = {
+const orders = ref([])
+const txTablePage = ref<PageMeta>({
   totalCount: 0,
   pageNo: 1,
   pageSize: 10,
   totalPage: 10,
-}
+})
+const txSvc = new TxService()
+onMounted(async () => {
+  const txData = await txSvc.listTx()
+  txTablePage.value = txData.meta
+
+  orders.value = orderPageItemList(
+    txData.list.map((itm) => {
+      const totalProductCount =
+        itm.products.reduce((total, product) => total + product.count, 0)
+      return {
+        ...itm,
+        createdAt: dayjs(itm.createdAt).format('YYYY-MM-DD HH:mm'),
+        count: totalProductCount,
+        userId: itm.user.userId,
+        balanceAmount: itm.payment.balanceAmount,
+        paidAmount: itm.payment.paidAmount,
+        paymentKey: itm.payment.paymentKey,
+        courier: itm.shipment?.courier,
+        trackingNo: itm.shipment?.trackingNo,
+      }
+    }),
+    [
+      'createdAt',
+      'txName',
+      'count',
+      'userId',
+      'status',
+      'txNote',
+      'balanceAmount',
+      'paidAmount',
+      'paymentKey',
+      'courier',
+      'trackingNo',
+    ],
+  )
+})
 </script>

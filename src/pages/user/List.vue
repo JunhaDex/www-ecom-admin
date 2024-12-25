@@ -32,7 +32,7 @@
         :columns="groupColumns"
         :has-actions="false"
         :items="groups"
-        :page-meta="pageMeta"
+        :page-meta="groupTablePage"
       >
         <template #control>
           <div class="flex justify-end mb-4">
@@ -90,14 +90,8 @@ const users = ref({
   raw: [],
   display: [],
 })
-const groups = []
+const groups = ref([])
 const branchUserTable = ref()
-const pageMeta = {
-  totalCount: 0,
-  pageNo: 1,
-  pageSize: 10,
-  totalPage: 10,
-}
 
 const userTablePage = ref<PageMeta>({
   totalCount: 0,
@@ -105,6 +99,14 @@ const userTablePage = ref<PageMeta>({
   pageSize: 10,
   totalPage: 10,
 })
+
+const groupTablePage = ref<PageMeta>({
+  totalCount: 0,
+  pageNo: 1,
+  pageSize: 10,
+  totalPage: 10,
+})
+
 
 const userSvc = new UserService()
 const groupSvc = new GroupService()
@@ -121,6 +123,17 @@ onMounted(async () => {
       }
     }),
     ['branchName', 'userId', 'branchManager', 'branchContact', 'groupName', 'status', 'createdAt'],
+  )
+  const pageGroupData = await groupSvc.listGroup()
+  groupTablePage.value = pageGroupData.meta
+  groups.value = orderPageItemList(
+    pageGroupData.list.map((itm) => {
+      return {
+        ...itm,
+        createdAt: dayjs(itm.createdAt).format('YYYY-MM-DD HH:mm'),
+      }
+    }),
+    ['groupName', 'description', 'createdAt'],
   )
 })
 
