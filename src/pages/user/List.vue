@@ -3,19 +3,18 @@
   <SafeArea>
     <div class="pt-8">
       <DataTable
+        ref="branchUserTable"
         class="mb-8"
         title="가맹점 계정 관리"
         :columns="userColumns"
         :has-actions="false"
-        :items="users"
+        :items="users.display"
         :page-meta="userTablePage"
       >
         <template #control>
           <div class="flex justify-end mb-2">
             <router-link :to="{ name: 'user-new' }" class="btn btn-primary"> 신규등록</router-link>
-            <button class="btn btn-secondary ml-4" @click="toggleSetUserGroup = true">
-              선택 그룹지정
-            </button>
+            <button class="btn btn-secondary ml-4" @click="openSetUserGroup">선택 그룹지정</button>
             <button class="btn btn-danger ml-4">선택 삭제</button>
           </div>
           <div class="flex justify-start">
@@ -37,7 +36,7 @@
       >
         <template #control>
           <div class="flex justify-end mb-4">
-            <button class="btn btn-primary">그룹추가</button>
+            <router-link :to="{ name: 'group-new' }" class="btn btn-primary">그룹추가</router-link>
           </div>
           <div class="flex justify-start">
             <select class="select select-bordered">
@@ -64,7 +63,7 @@
     <template #footer>
       <div class="flex justify-end">
         <button class="btn btn-secondary">취소</button>
-        <button class="btn btn-primary ml-2">변경</button>
+        <button class="btn btn-primary ml-2" @click="updateUserGroup">변경</button>
       </div>
     </template>
   </InputModal>
@@ -80,13 +79,19 @@ import type { PageMeta } from '@/types/ui.type'
 import { orderPageItemList } from '@/utils/index.util'
 import InputModal from '@/components/inputs/InputModal.vue'
 import dayjs from 'dayjs'
+import type { BranchUser } from '@/types/service.type'
+import { GroupService } from '@/services/group.service'
 
 const userColumns = ['가맹점명', '아이디', '대표자', '연락처', '유저 그룹', '계정상태', '생성일']
 
 const toggleSetUserGroup = ref(false)
 const groupColumns = ['그룹명', '그룹 설명', '생성일']
-const users = ref([])
+const users = ref({
+  raw: [],
+  display: [],
+})
 const groups = []
+const branchUserTable = ref()
 const pageMeta = {
   totalCount: 0,
   pageNo: 1,
@@ -102,10 +107,12 @@ const userTablePage = ref<PageMeta>({
 })
 
 const userSvc = new UserService()
+const groupSvc = new GroupService()
 onMounted(async () => {
   const pageData = await userSvc.listUser()
   userTablePage.value = pageData.meta
-  users.value = orderPageItemList(
+  users.value.raw = pageData.list
+  users.value.display = orderPageItemList(
     pageData.list.map((itm) => {
       return {
         ...itm,
@@ -116,4 +123,19 @@ onMounted(async () => {
     ['branchName', 'userId', 'branchManager', 'branchContact', 'groupName', 'status', 'createdAt'],
   )
 })
+
+function openSetUserGroup() {
+  const rv = branchUserTable.value?.getCheckedIndex()
+  console.log(rv)
+  toggleSetUserGroup.value = true
+}
+
+async function updateUserGroup() {
+  const groupId = 1
+  const keys = branchUserTable.value?.getCheckedIndex()
+  const targetUsers = (users.value.raw as BranchUser[]).filter((_, index) => keys?.includes(index))
+  await groupSvc.addUserToGroup(groupId, targetUsers)
+  window.alert(`${targetUsers.length}명 그룹지정이 완료되었습니다.`)
+  toggleSetUserGroup.value = false
+}
 </script>

@@ -83,6 +83,8 @@ const props = defineProps<{
   pageMeta: PageMeta
 }>()
 
+defineExpose({ getCheckedIndex })
+
 const pageList = computed(() => {
   const list = []
   const totalMax = props.pageMeta.totalPage > 3 ? 3 : props.pageMeta.totalPage
@@ -108,9 +110,14 @@ watch(isCheckAll, (value) => {
   }
 })
 
-watch(checkboxes.length, (value) => {
-  console.log(value)
-})
+function getCheckedIndex() {
+  return Object.keys(checkboxes).reduce((acc, key) => {
+    if (checkboxes[key].checked) {
+      acc.push(parseInt(key.split('_')[1]))
+    }
+    return acc
+  }, [] as number[])
+}
 </script>
 <style scoped>
 .table {
