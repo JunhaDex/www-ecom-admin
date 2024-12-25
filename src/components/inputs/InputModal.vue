@@ -11,9 +11,11 @@
       <slot name="footer" />
     </div>
   </div>
-  <div v-show="isShow" class="modal-backdrop backdrop backdrop-blur-sm"></div>
+  <Backdrop v-show="isShow" @click="clickClose" />
 </template>
 <script setup lang="ts">
+import Backdrop from '@/components/feedbacks/Backdrop.vue'
+
 const props = defineProps<{
   isShow: boolean
   title: string
@@ -26,16 +28,6 @@ function clickClose() {
 }
 </script>
 <style scoped>
-.modal-backdrop {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background-color: rgba(0, 0, 0, 0.5);
-  z-index: 9;
-}
-
 .modal {
   position: fixed;
   top: 50%;
@@ -45,7 +37,7 @@ function clickClose() {
   background-color: white;
   border-radius: 8px;
   box-shadow: theme('boxShadow.md');
-  z-index: 10;
+  z-index: 40;
 
   &-header {
     display: flex;
