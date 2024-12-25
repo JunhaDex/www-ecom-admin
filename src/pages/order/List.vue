@@ -10,19 +10,19 @@
         :page-meta="txTablePage"
       >
         <template #control>
-          <div class="flex justify-end">
-            <button class="btn btn-secondary mr-2">내보내기</button>
-            <button class="btn btn-primary">목록 최신화</button>
+          <div class="flex justify-end mb-2">
+            <button class="btn btn-secondary mr-2">상태 업데이트</button>
+            <button class="btn btn-secondary mr-2">배송정보 등록</button>
+            <button class="btn btn-secondary">목록 최신화</button>
           </div>
           <div class="flex justify-start">
-            <select class="select select-bordered">
-              <option>지점명</option>
-              <option>사용자 아이디</option>
+            <select class="select-box">
+              <option>상품명</option>
             </select>
-            <input type="text" class="flex-1" placeholder="검색어를 입력하세요" />
-            <button class="btn btn-primary">검색</button>
+            <input type="text" class="flex-1 input ml-4" placeholder="검색어를 입력하세요" />
+            <button class="btn btn-primary ml-4">검색</button>
           </div>
-          <div class="flex justify-start">
+          <div class="flex justify-start mt-2">
             <button class="btn btn-primary">검색 필터추가 +</button>
           </div>
         </template>
