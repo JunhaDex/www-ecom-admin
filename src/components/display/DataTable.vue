@@ -107,6 +107,10 @@ watch(isCheckAll, (value) => {
     checkboxes[key].checked = value
   }
 })
+
+watch(checkboxes.length, (value) => {
+  console.log(value)
+})
 </script>
 <style scoped>
 .table {

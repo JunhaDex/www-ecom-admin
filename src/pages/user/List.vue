@@ -52,8 +52,21 @@
   </SafeArea>
   <AppFooter />
   <InputModal :is-show="toggleSetUserGroup" title="그룹생성" @close="toggleSetUserGroup = false">
-    <p>foobar</p>
-    <template #footer> footer</template>
+    <form>
+      <div class="input-wrap">
+        <label for="name" class="label label-lt">그룹 선택</label>
+        <select class="select-box">
+          <option>지점명</option>
+          <option>사용자 아이디</option>
+        </select>
+      </div>
+    </form>
+    <template #footer>
+      <div class="flex justify-end">
+        <button class="btn btn-secondary">취소</button>
+        <button class="btn btn-primary ml-2">변경</button>
+      </div>
+    </template>
   </InputModal>
 </template>
 <script setup lang="ts">
@@ -66,6 +79,7 @@ import { UserService } from '@/services/user.service'
 import type { PageMeta } from '@/types/ui.type'
 import { orderPageItemList } from '@/utils/index.util'
 import InputModal from '@/components/inputs/InputModal.vue'
+import dayjs from 'dayjs'
 
 const userColumns = ['가맹점명', '아이디', '대표자', '연락처', '유저 그룹', '계정상태', '생성일']
 
@@ -91,14 +105,15 @@ const userSvc = new UserService()
 onMounted(async () => {
   const pageData = await userSvc.listUser()
   userTablePage.value = pageData.meta
-  users.value = orderPageItemList(pageData.list, [
-    'branchName',
-    'userId',
-    'branchManager',
-    'branchContact',
-    'groupId',
-    'status',
-    'createdAt',
-  ])
+  users.value = orderPageItemList(
+    pageData.list.map((itm) => {
+      return {
+        ...itm,
+        groupName: itm.userGroup?.groupName,
+        createdAt: dayjs(itm.createdAt).format('YYYY-MM-DD HH:mm'),
+      }
+    }),
+    ['branchName', 'userId', 'branchManager', 'branchContact', 'groupName', 'status', 'createdAt'],
+  )
 })
 </script>

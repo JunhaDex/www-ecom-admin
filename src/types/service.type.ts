@@ -11,6 +11,7 @@ export interface BranchUser {
   branchManager: string
   branchContact: string
   userId: string
+  userGroup: UserGroup
   status: number
   createdAt: Date
 }
@@ -21,4 +22,13 @@ export interface BranchUserCreate {
   branchContact: string
   userId: string
   pwd: string
+}
+
+export interface UserGroup {
+  id: number
+  groupName: string
+  description: string
+  createdAt: Date
+  userCount?: number
+  productCount?: number
 }
