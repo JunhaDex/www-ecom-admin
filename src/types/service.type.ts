@@ -24,6 +24,12 @@ export interface BranchUserCreate {
   pwd: string
 }
 
+export interface BranchCourierCreate {
+  courierName: string;
+  apiUrl: string;
+}
+
+
 export interface UserGroup {
   id: number
   groupName: string

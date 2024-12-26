@@ -12,7 +12,7 @@
               <input v-model="isCheckAll" class="input-check" type="checkbox" />
             </th>
             <th v-for="column in columns" :key="column">{{ column }}</th>
-            <th>관리매뉴</th>
+            <th>관리메뉴</th>
           </tr>
         </thead>
         <tbody v-if="items.length">

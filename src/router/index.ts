@@ -83,6 +83,27 @@ const router = createRouter({
           name: 'carrier-list',
           component: () => import('@/pages/carrier/List.vue'),
         },
+        {
+          path: 'new',
+          name: 'carrier-new',
+          component: () => import('@/pages/carrier/New.vue'),
+        },
+      ],
+    },
+    {
+      path: '/admin',
+      redirect: '/admin/list',
+      children: [
+        {
+          path: 'list',
+          name: 'admin-list',
+          component: () => import('@/pages/admin/List.vue'),
+        },
+        {
+          path: 'new',
+          name: 'admin-new',
+          component: () => import('@/pages/admin/New.vue'),
+        },
       ],
     },
   ],

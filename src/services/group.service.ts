@@ -19,4 +19,7 @@ export class GroupService extends ApiService {
   async createGroup(newGroup: UserGroupCreate): Promise<void> {
     await this.client.post('new', newGroup)
   }
+  async deleteGroup(index: number): Promise<void> {
+    await this.client.delete(`${index}/remove`)
+  }
 }

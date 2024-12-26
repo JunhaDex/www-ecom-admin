@@ -49,7 +49,7 @@
         <template #actions>
           <li>
             <span class="dropdown-item">정보 및 상품 변경</span>
-            <span class="dropdown-item text-danger">그룹 삭제</span>
+            <span class="dropdown-item text-danger" @click="deleteGroup">그룹 삭제</span>
           </li>
         </template>
       </DataTable>
@@ -176,17 +176,18 @@ async function deleteUser() {
   }
 }
 
-// async function deleteGroup() {
-//   const index = branchGroupTable.value!.getRecentActionTarget()
-//   const target = groups.value.raw[index] as UserGroup
-//   if (window.confirm('그룹을 삭제합니다. 계속 하시겠습니까?')) {
-//     try {
-//       // TODO: add group service delete
-//       window.alert('그룹이 삭제되었습니다.')
-//     } catch (e) {
-//       console.error(e)
-//       window.alert('그룹을 삭제할 수 없습니다.')
-//     }
-//   }
-// }
+async function deleteGroup() {
+  const index = branchGroupTable.value!.getRecentActionTarget()
+  const target = groups.value.raw[index] as UserGroup
+  if (window.confirm('그룹을 삭제합니다. 계속 하시겠습니까?')) {
+    try {
+      await groupSvc.deleteGroup(target.id)
+      window.alert('그룹이 삭제되었습니다.')
+      router.go(0)
+    } catch (e) {
+      console.error(e)
+      window.alert('그룹을 삭제할 수 없습니다.')
+    }
+  }
+}
 </script>

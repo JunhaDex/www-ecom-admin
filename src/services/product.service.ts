@@ -10,4 +10,8 @@ export class ProductService extends ApiService {
     const res = await this.client.get('list')
     return this.unpackRes(res) as PaginatedResponse<Product>
   }
+
+  async deleteProduct(index: number): Promise<void> {
+    await this.client.delete(`${index}/remove`)
+  }
 }
