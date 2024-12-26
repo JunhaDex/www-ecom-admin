@@ -29,7 +29,7 @@
     padding: 0.5rem 0.75rem;
     z-index: 50;
     opacity: 0;
-    background-color: theme('colors.background');
+    background-color: white;
     border-radius: 8px;
     box-shadow: theme('boxShadow.md');
   }

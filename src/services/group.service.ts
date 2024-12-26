@@ -1,4 +1,4 @@
-import type {PaginatedResponse, UserGroup } from '@/types/service.type'
+import type { PaginatedResponse, UserGroup, UserGroupCreate } from '@/types/service.type'
 import { ApiService } from '@/services/api.service'
 import type { BranchUser } from '@/types/service.type'
 
@@ -14,5 +14,9 @@ export class GroupService extends ApiService {
   }
   async addUserToGroup(index: number, targetUsers: BranchUser[]): Promise<void> {
     await this.client.post(`${index}/user/add`, { users: targetUsers })
+  }
+
+  async createGroup(newGroup: UserGroupCreate): Promise<void> {
+    await this.client.post('new', newGroup)
   }
 }

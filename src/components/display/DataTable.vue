@@ -12,7 +12,7 @@
               <input v-model="isCheckAll" class="input-check" type="checkbox" />
             </th>
             <th v-for="column in columns" :key="column">{{ column }}</th>
-            <th v-if="hasActions">Actions</th>
+            <th>관리매뉴</th>
           </tr>
         </thead>
         <tbody v-if="items.length">
@@ -27,10 +27,15 @@
             <td v-for="(entry, idx) in Object.values(item)" :key="`${key}-${idx}`">
               {{ entry === null ? '-' : entry }}
             </td>
-            <td v-if="hasActions">
-              <div class="actions">
-                <slot name="actions" />
-              </div>
+            <td class="relative" @click="actionClicked(key)">
+              <Dropdown>
+                <template #summary>
+                  <span class="btn btn-sm">관리</span>
+                </template>
+                <template #default>
+                  <slot name="actions" />
+                </template>
+              </Dropdown>
             </td>
           </tr>
         </tbody>
@@ -74,16 +79,16 @@ import IconButton from '@/components/inputs/IconButton.vue'
 import BackIcon from '@/assets/icons/back.svg'
 import ForwardIcon from '@/assets/icons/forward.svg'
 import { computed, reactive, ref, watch } from 'vue'
+import Dropdown from '@/components/inputs/Dropdown.vue'
 
 const props = defineProps<{
   title: string
   columns: string[]
-  hasActions: boolean
   items: never[]
   pageMeta: PageMeta
 }>()
 
-defineExpose({ getCheckedIndex })
+defineExpose({ getCheckedIndex, getRecentActionTarget })
 
 const pageList = computed(() => {
   const list = []
@@ -103,6 +108,7 @@ const isFirst = computed(() => props.pageMeta.pageNo === 1)
 const isLast = computed(() => props.pageMeta.pageNo === props.pageMeta.totalPage)
 const checkboxes = reactive<{ [key: string]: HTMLInputElement }>({})
 const isCheckAll = ref(false)
+const actionTarget = ref<number | null>(null)
 
 watch(isCheckAll, (value) => {
   for (const key in checkboxes) {
@@ -117,6 +123,14 @@ function getCheckedIndex() {
     }
     return acc
   }, [] as number[])
+}
+
+function actionClicked(key: number) {
+  actionTarget.value = key
+}
+
+function getRecentActionTarget() {
+  return actionTarget.value
 }
 </script>
 <style scoped>

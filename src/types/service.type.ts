@@ -33,6 +33,12 @@ export interface UserGroup {
   productCount?: number
 }
 
+export interface UserGroupCreate {
+  groupName: string
+  description: string
+  products?: Product[]
+}
+
 export interface Product {
   id: number
   productName: string
@@ -42,88 +48,89 @@ export interface Product {
   createdAt: Date
 }
 
-
 export interface TxAdminItem {
-  id: number;
-  txName: string;
-  txNote: string;
-  status: number;
-  payment: Payment;
+  id: number
+  txName: string
+  txNote: string
+  status: number
+  payment: Payment
   user: {
-    id: number;
-    userId: string;
-    branchName: string;
-    branchManager: string;
-    branchContact: string;
-  };
+    id: number
+    userId: string
+    branchName: string
+    branchManager: string
+    branchContact: string
+  }
   products: {
-    product: Product;
-    count: number;
-    price: number;
-  }[];
-  shipment?: Shipment;
-  createdAt: Date;
+    product: Product
+    count: number
+    price: number
+  }[]
+  shipment?: Shipment
+  createdAt: Date
 }
 
 export interface Payment {
-  id: number;
-  sessionKey: string;
-  payMethod: string;
-  paymentKey: string;
-  orderId: string;
-  paidAmount: number;
-  balanceAmount: number;
-  paidAt: Date;
-  createdAt: Date;
-  updatedAt: Date;
+  id: number
+  sessionKey: string
+  payMethod: string
+  paymentKey: string
+  orderId: string
+  paidAmount: number
+  balanceAmount: number
+  paidAt: Date
+  createdAt: Date
+  updatedAt: Date
 }
+
 export interface Shipment {
-  id: number;
-  txId: number;
-  courierId: number;
-  address: string;
-  recipientName: string;
-  recipientPhone: string;
-  trackingNo: string;
-  status: number;
-  createdAt: Date;
-  updatedAt: Date;
-  courier?: Courier;
-  transaction?: Transaction;
+  id: number
+  txId: number
+  courierId: number
+  address: string
+  recipientName: string
+  recipientPhone: string
+  trackingNo: string
+  status: number
+  createdAt: Date
+  updatedAt: Date
+  courier?: Courier
+  transaction?: Transaction
 }
 
 export interface Courier {
-  id: number;
-  courierName: string;
-  apiUrl: string;
-  createdAt: Date;
+  id: number
+  courierName: string
+  apiUrl: string
+  createdAt: Date
 }
 
 export interface Transaction {
-  id: number;
-  paymentId: number;
-  txName: string;
-  txNote: string;
-  userId: number;
-  status: number;
-  createdAt: Date;
-  updatedAt: Date;
-  payment?: Payment;
-  user?: User;
+  id: number
+  paymentId: number
+  txName: string
+  txNote: string
+  userId: number
+  status: number
+  createdAt: Date
+  updatedAt: Date
+  payment?: Payment
+  user?: User
   products?: {
-    product: Product;
-    count: number;
-    price: number;
-  }[];
+    product: Product
+    count: number
+    price: number
+  }[]
 }
+
 export interface User {
-  id: number;
-  userId: string;
-  branchName: string;
-  branchManager: string;
-  branchContact: string;
-  status: number;
-  createdAt: Date;
-  updatedAt: Date;
-  userGroup?: UserGroup;
+  id: number
+  userId: string
+  branchName: string
+  branchManager: string
+  branchContact: string
+  status: number
+  createdAt: Date
+  updatedAt: Date
+  userGroup?: UserGroup
 }

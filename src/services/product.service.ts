@@ -9,6 +9,5 @@ export class ProductService extends ApiService {
   async listProduct(): Promise<PaginatedResponse<Product>> {
     const res = await this.client.get('list')
     return this.unpackRes(res) as PaginatedResponse<Product>
-
   }
 }

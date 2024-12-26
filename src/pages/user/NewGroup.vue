@@ -3,11 +3,11 @@
   <SafeArea>
     <CreateForm title="유저 그룹생성">
       <!--그룹명 / 그룹설명 / 상품추가-->
-      <form>
+      <form @submit="submitGroup">
         <h3 class="text-lg font-semibold mb-2">그룹 정보</h3>
         <div class="input-wrap mb-4">
           <label for="name" class="label label-lt">그룹명</label>
-          <input v-model="groupInfo.name" type="text" id="name" class="input" />
+          <input v-model="groupInfo.groupName" type="text" id="name" class="input" />
         </div>
         <div class="input-wrap mb-4">
           <label for="name" class="label label-lt">그룹설명</label>
@@ -50,15 +50,14 @@ import CreateForm from '@/components/display/CreateForm.vue'
 import { onBeforeRouteLeave } from 'vue-router'
 import { onMounted, ref } from 'vue'
 import { ProductService } from '@/services/product.service'
-import type { Product } from '@/types/service.type'
+import type { Product, UserGroupCreate } from '@/types/service.type'
+import { GroupService } from '@/services/group.service'
 
 const productSvc = new ProductService()
+const groupSvc = new GroupService()
 const products = ref<Product[]>([])
-const groupInfo = ref<{
-  name: string
-  description: string
-}>({
-  name: '',
+const groupInfo = ref<UserGroupCreate>({
+  groupName: '',
   description: '',
 })
 const selected = ref<Product[]>([])
@@ -87,6 +86,39 @@ function removeProduct(id: number) {
   if (idx > -1) {
     selected.value.splice(idx, 1)
   }
+}
+
+function validateInput() {
+  if (!groupInfo.value.groupName) {
+    alert('그룹명을 입력해주세요.')
+    return false
+  }
+  return true
+}
+
+async function submitGroup(e: Event) {
+  e.preventDefault()
+  if (!validateInput()) return
+  try {
+    await groupSvc.createGroup({
+      ...groupInfo.value,
+      products: selected.value.length ? selected.value : undefined,
+    })
+    alert('그룹이 생성되었습니다.')
+    resetForm()
+  } catch (e) {
+    console.error(e)
+    alert('그룹을 생성할 수 없습니다.')
+  }
+}
+
+function resetForm() {
+  groupInfo.value = {
+    groupName: '',
+    description: '',
+  }
+  selectId.value = ''
+  selected.value = []
 }
 </script>
 <style scoped>
