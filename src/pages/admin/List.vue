@@ -12,7 +12,9 @@
       >
         <template #control>
           <div class="flex justify-end mb-2">
-            <router-link :to="{ name: 'admin-new' }" class="btn btn-primary"> 관리자 등록</router-link>
+            <router-link :to="{ name: 'admin-new' }" class="btn btn-primary">
+              관리자 등록</router-link
+            >
           </div>
           <div class="flex justify-start">
             <select class="select-box">
@@ -47,7 +49,7 @@ import { useRouter } from 'vue-router'
 import { AdminService } from '@/services/admin.service'
 import type { Admin } from '@/types/service.type'
 
-const adminColumns = ['아이디', '이름','생성일']
+const adminColumns = ['아이디', '이름', '생성일']
 const admins = ref({
   raw: [],
   display: [],

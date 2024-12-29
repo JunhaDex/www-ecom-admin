@@ -31,7 +31,6 @@ import CreateForm from '@/components/display/CreateForm.vue'
 import { onBeforeRouteLeave } from 'vue-router'
 import { ref } from 'vue'
 import type { AdminCreateInput } from '@/types/service.type'
-import { UserService } from '@/services/user.service'
 import { AdminService } from '@/services/admin.service'
 
 const adminSvc = new AdminService()
