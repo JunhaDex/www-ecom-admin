@@ -140,3 +140,15 @@ export interface User {
   updatedAt: Date
   userGroup?: UserGroup
 }
+export interface Admin {
+  id: number;
+  adminId: string;
+  name: string;
+  createdAt: Date;
+}
+
+export interface AdminCreateInput {
+  adminId: string;
+  pwd: string;
+  name: string;
+}
