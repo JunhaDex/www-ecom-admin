@@ -97,7 +97,6 @@ function validateInput() {
 async function submitUser(e: Event) {
   e.preventDefault()
   if (!validateInput()) return
-  console.log(userInfo.value)
   try {
     await userSvc.createUser(userInfo.value)
     alert('가맹점 명의의 신규 계정이 생성되었습니다.')

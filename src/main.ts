@@ -1,3 +1,5 @@
+import 'quill/dist/quill.core.css'
+import 'quill/dist/quill.snow.css'
 import './assets/styles/main.css'
 
 import dayjs from 'dayjs'

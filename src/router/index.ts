@@ -42,6 +42,22 @@ const router = createRouter({
       ],
     },
     {
+      path: '/notice',
+      redirect: '/notice/list',
+      children: [
+        {
+          path: 'list',
+          name: 'notice-list',
+          component: () => import('@/pages/notice/List.vue'),
+        },
+        {
+          path: 'new',
+          name: 'notice-new',
+          component: () => import('@/pages/notice/New.vue'),
+        },
+      ],
+    },
+    {
       path: '/order',
       redirect: '/order/list',
       children: [
@@ -49,28 +65,6 @@ const router = createRouter({
           path: 'list',
           name: 'order-list',
           component: () => import('@/pages/order/List.vue'),
-        },
-      ],
-    },
-    {
-      path: '/payment',
-      redirect: '/payment/list',
-      children: [
-        {
-          path: 'list',
-          name: 'payment-list',
-          component: () => import('@/pages/payment/List.vue'),
-        },
-      ],
-    },
-    {
-      path: '/shipment',
-      redirect: '/shipment/list',
-      children: [
-        {
-          path: 'list',
-          name: 'shipment-list',
-          component: () => import('@/pages/shipment/List.vue'),
         },
       ],
     },

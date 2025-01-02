@@ -25,10 +25,9 @@ export interface BranchUserCreate {
 }
 
 export interface BranchCourierCreate {
-  courierName: string;
-  apiUrl: string;
+  courierName: string
+  apiUrl: string
 }
-
 
 export interface UserGroup {
   id: number
@@ -52,6 +51,19 @@ export interface Product {
   productPrice: number
   status: string
   createdAt: Date
+}
+
+export interface Notice {
+  id: number
+  title: string
+  content: string
+  createdAt: Date
+  updatedAt?: Date
+}
+
+export interface NoticeCreateInput {
+  title: string
+  content: string
 }
 
 export interface TxAdminItem {
@@ -140,15 +152,16 @@ export interface User {
   updatedAt: Date
   userGroup?: UserGroup
 }
+
 export interface Admin {
-  id: number;
-  adminId: string;
-  name: string;
-  createdAt: Date;
+  id: number
+  adminId: string
+  name: string
+  createdAt: Date
 }
 
 export interface AdminCreateInput {
-  adminId: string;
-  pwd: string;
-  name: string;
+  adminId: string
+  pwd: string
+  name: string
 }
