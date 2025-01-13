@@ -28,7 +28,7 @@
         <template #actions>
           <li>
             <span class="dropdown-item">비밀번호 초기화</span>
-            <span class="dropdown-item">정보 수정</span>
+            <span class="dropdown-item" @click="updateUser">정보 수정</span>
             <span class="dropdown-item text-danger" @click="deleteUser">유저 삭제</span>
           </li>
         </template>
@@ -164,6 +164,12 @@ async function updateUserGroup() {
   await groupSvc.addUserToGroup(groupId, targetUsers)
   window.alert(`${targetUsers.length}명 그룹지정이 완료되었습니다.`)
   toggleSetUserGroup.value = false
+}
+
+async function updateUser() {
+  const index = branchUserTable.value!.getRecentActionTarget()
+  const target = users.value.raw[index] as BranchUser
+  await router.push({ name: 'user-update', params: { id: target.id } })
 }
 
 async function deleteUser() {

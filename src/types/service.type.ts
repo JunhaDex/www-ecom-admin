@@ -24,6 +24,13 @@ export interface BranchUserCreate {
   pwd: string
 }
 
+export interface BranchUserUpdate {
+  userId?: string
+  branchName?: string
+  branchManager?: string
+  branchContact?: string
+}
+
 export interface BranchCourierCreate {
   courierName: string
   apiUrl: string

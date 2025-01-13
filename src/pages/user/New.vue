@@ -23,7 +23,13 @@
         </div>
         <div class="input-wrap mb-6">
           <label for="name" class="label label-lt">초기 비밀번호</label>
-          <input v-model="userInfo.pwd" type="password" id="pwd" class="input" />
+          <input
+            v-model="userInfo.pwd"
+            type="password"
+            id="pwd"
+            class="input"
+            :disabled="isUpdate"
+          />
         </div>
         <div class="flex justify-end">
           <router-link :to="{ name: 'user-list' }" class="btn btn-secondary">취소</router-link>
@@ -37,18 +43,27 @@
 import AppBar from '@/components/surfaces/AppBar.vue'
 import SafeArea from '@/components/layouts/SafeArea.vue'
 import CreateForm from '@/components/display/CreateForm.vue'
-import { onBeforeRouteLeave } from 'vue-router'
-import { ref } from 'vue'
+import { onBeforeRouteLeave, useRoute } from 'vue-router'
+import { onMounted, ref } from 'vue'
 import type { BranchUserCreate } from '@/types/service.type'
 import { UserService } from '@/services/user.service'
 
 const userSvc = new UserService()
+const route = useRoute()
 const userInfo = ref<BranchUserCreate>({
   branchName: '',
   branchManager: '',
   branchContact: '',
   userId: '',
   pwd: '',
+})
+const isUpdate = ref(false)
+
+onMounted(async () => {
+  if (route.name === 'user-update') {
+    isUpdate.value = true
+    await loadUser()
+  }
 })
 
 onBeforeRouteLeave(() => {
@@ -63,6 +78,18 @@ onBeforeRouteLeave(() => {
     return window.confirm('작성 중인 내용이 있습니다. 정말로 나가시겠습니까?')
   }
 })
+
+async function loadUser() {
+  const userId = Number(route.params.id)
+  const user = await userSvc.getUser(userId)
+  userInfo.value = {
+    branchName: user.branchName,
+    branchManager: user.branchManager,
+    branchContact: user.branchContact,
+    userId: user.userId,
+    pwd: '',
+  }
+}
 
 function validateInput() {
   if (!userInfo.value.branchName) {
@@ -84,12 +111,14 @@ function validateInput() {
     alert('사용자 ID를 입력해주세요.')
     return false
   }
-  if (!userInfo.value.pwd) {
-    alert('초기 비밀번호를 입력해주세요.')
-    return false
-  } else if (userInfo.value.pwd.length < 6 || userInfo.value.pwd.length > 12) {
-    alert('비밀번호는 6자 이상 12자 이하로 입력해주세요.')
-    return false
+  if (!isUpdate.value) {
+    if (!userInfo.value.pwd) {
+      alert('초기 비밀번호를 입력해주세요.')
+      return false
+    } else if (userInfo.value.pwd.length < 6 || userInfo.value.pwd.length > 12) {
+      alert('비밀번호는 6자 이상 12자 이하로 입력해주세요.')
+      return false
+    }
   }
   return true
 }
@@ -97,6 +126,14 @@ function validateInput() {
 async function submitUser(e: Event) {
   e.preventDefault()
   if (!validateInput()) return
+  if (route.name === 'user-update') {
+    await updateUser()
+  } else {
+    await createUser()
+  }
+}
+
+async function createUser() {
   try {
     await userSvc.createUser(userInfo.value)
     alert('가맹점 명의의 신규 계정이 생성되었습니다.')
@@ -107,9 +144,22 @@ async function submitUser(e: Event) {
       userId: '',
       pwd: '',
     }
-  } catch (e) {
+  } catch (e: any) {
     console.error(e.message.code)
     alert('신규 계정 생성에 실패했습니다.')
+  }
+}
+
+async function updateUser() {
+  const userId = Number(route.params.id)
+  try {
+    userInfo.value.pwd = ''
+    await userSvc.updateUser(userId, userInfo.value)
+    alert('가맹점 명의의 계정이 수정되었습니다.')
+    await loadUser()
+  } catch (e: any) {
+    console.error(e.message.code)
+    alert('계정 수정에 실패했습니다.')
   }
 }
 </script>

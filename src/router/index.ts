@@ -24,9 +24,21 @@ const router = createRouter({
           component: () => import('@/pages/user/New.vue'),
         },
         {
+          path: ':id',
+          name: 'user-update',
+          component: () => import('@/pages/user/New.vue'),
+          props: true,
+        },
+        {
           path: 'group/new',
           name: 'group-new',
           component: () => import('@/pages/user/NewGroup.vue'),
+        },
+        {
+          path: 'group/:id',
+          name: 'group-update',
+          component: () => import('@/pages/user/NewGroup.vue'),
+          props: true,
         },
       ],
     },
