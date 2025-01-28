@@ -47,14 +47,20 @@
 import AppBar from '@/components/surfaces/AppBar.vue'
 import SafeArea from '@/components/layouts/SafeArea.vue'
 import CreateForm from '@/components/display/CreateForm.vue'
-import { onBeforeRouteLeave } from 'vue-router'
+import { onBeforeRouteLeave, useRoute } from 'vue-router'
 import { onMounted, ref } from 'vue'
 import { ProductService } from '@/services/product.service'
 import type { Product, UserGroupCreate } from '@/types/service.type'
 import { GroupService } from '@/services/group.service'
 
+const route = useRoute()
 const productSvc = new ProductService()
 const groupSvc = new GroupService()
+
+const props = defineProps<{
+  id: string
+}>()
+
 const products = ref<Product[]>([])
 const groupInfo = ref<UserGroupCreate>({
   groupName: '',
@@ -62,21 +68,39 @@ const groupInfo = ref<UserGroupCreate>({
 })
 const selected = ref<Product[]>([])
 const selectId = ref('')
+const isUpdate = ref(false)
+
 onMounted(async () => {
   const res = await productSvc.listProduct()
   products.value = res.list
+  if (route.name === 'group-update') {
+    isUpdate.value = true
+    await loadGroup()
+  }
 })
 onBeforeRouteLeave(() => {
   // TODO: when not empty, alert
 })
 
+async function loadGroup() {
+  const groupId = Number(props.id)
+  const grp = await groupSvc.getGroup(groupId)
+  groupInfo.value = {
+    groupName: grp.group.groupName,
+    description: grp.group.description,
+  }
+  selected.value = grp.products || []
+}
+
 function addProduct() {
   if (!isNaN(Number(selectId.value))) {
     const selectedProduct = products.value.find((product) => product.id === Number(selectId.value))
     if (selectedProduct && !selected.value.find((product) => product.id === selectedProduct.id)) {
+      if (isUpdate.value) {
+        addGroupProduct(selectedProduct)
+      }
       selected.value.push(selectedProduct)
       selected.value.sort((a, b) => a.id - b.id)
-      console.log(selected.value)
     }
   }
 }
@@ -84,6 +108,10 @@ function addProduct() {
 function removeProduct(id: number) {
   const idx = selected.value.findIndex((product) => product.id === id)
   if (idx > -1) {
+    if (isUpdate.value) {
+      const product = selected.value[idx]
+      removeGroupProduct(product)
+    }
     selected.value.splice(idx, 1)
   }
 }
@@ -99,6 +127,14 @@ function validateInput() {
 async function submitGroup(e: Event) {
   e.preventDefault()
   if (!validateInput()) return
+  if (isUpdate.value) {
+    await updateGroup()
+  } else {
+    await createGroup()
+  }
+}
+
+async function createGroup() {
   try {
     await groupSvc.createGroup({
       ...groupInfo.value,
@@ -109,6 +145,39 @@ async function submitGroup(e: Event) {
   } catch (e) {
     console.error(e)
     alert('그룹을 생성할 수 없습니다.')
+  }
+}
+
+async function updateGroup() {
+  const groupId = Number(props.id)
+  try {
+    await groupSvc.updateGroup(groupId, {
+      ...groupInfo.value,
+    })
+    alert('그룹이 수정되었습니다.')
+  } catch (e) {
+    console.error(e)
+    alert('그룹을 수정할 수 없습니다.')
+  }
+}
+
+async function addGroupProduct(product: Product) {
+  const groupId = Number(props.id)
+  try {
+    await groupSvc.addGroupProduct(groupId, [product])
+  } catch (e) {
+    console.error(e)
+    alert('상품을 추가할 수 없습니다.')
+  }
+}
+
+async function removeGroupProduct(product: Product) {
+  const groupId = Number(props.id)
+  try {
+    await groupSvc.removeGroupProduct(groupId, [product])
+  } catch (e) {
+    console.error(e)
+    alert('상품을 삭제할 수 없습니다.')
   }
 }
 

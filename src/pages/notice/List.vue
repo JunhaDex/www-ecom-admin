@@ -15,6 +15,7 @@
       </template>
       <template #actions>
         <li>
+          <span class="dropdown-item">공지 수정</span>
           <span class="dropdown-item text-danger" @click="deleteNotice">공지사항 삭제</span>
         </li>
       </template>

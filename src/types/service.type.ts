@@ -60,6 +60,12 @@ export interface Product {
   createdAt: Date
 }
 
+export interface ProductCreate {
+  productName: string
+  description: string
+  productPrice: number
+}
+
 export interface Notice {
   id: number
   title: string

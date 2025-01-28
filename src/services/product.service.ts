@@ -11,6 +11,12 @@ export class ProductService extends ApiService {
     return this.unpackRes(res) as PaginatedResponse<Product>
   }
 
+  async createProduct(newProduct: FormData): Promise<void> {
+    await this.client.post('new', newProduct, {
+      headers: { 'Content-Type': 'multipart/form-data' },
+    })
+  }
+
   async deleteProduct(index: number): Promise<void> {
     await this.client.delete(`${index}/remove`)
   }

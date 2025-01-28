@@ -12,7 +12,9 @@
       >
         <template #control>
           <div class="flex justify-end mb-2">
-            <button class="btn btn-primary">상품 추가</button>
+            <router-link :to="{ name: 'product-new' }" class="btn btn-primary">
+              상품 추가
+            </router-link>
           </div>
           <div class="flex justify-start">
             <select class="select-box">
@@ -24,6 +26,7 @@
         </template>
         <template #actions>
           <li>
+            <span class="dropdown-item">상품 수정</span>
             <span class="dropdown-item text-danger" @click="deleteProduct">상품 삭제</span>
           </li>
         </template>

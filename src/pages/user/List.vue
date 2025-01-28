@@ -48,7 +48,7 @@
         </template>
         <template #actions>
           <li>
-            <span class="dropdown-item">정보 및 상품 변경</span>
+            <span class="dropdown-item" @click="updateGroup">정보 및 상품 변경</span>
             <span class="dropdown-item text-danger" @click="deleteGroup">그룹 삭제</span>
           </li>
         </template>
@@ -170,6 +170,12 @@ async function updateUser() {
   const index = branchUserTable.value!.getRecentActionTarget()
   const target = users.value.raw[index] as BranchUser
   await router.push({ name: 'user-update', params: { id: target.id } })
+}
+
+async function updateGroup() {
+  const index = branchGroupTable.value!.getRecentActionTarget()
+  const target = groups.value.raw[index] as UserGroup
+  await router.push({ name: 'group-update', params: { id: target.id } })
 }
 
 async function deleteUser() {
