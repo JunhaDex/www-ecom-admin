@@ -4,8 +4,8 @@
       <h2 class="text-xl font-semibold mb-4">{{ title }}</h2>
       <slot name="control" />
     </div>
-    <div class="table-container w-full overflow-x-auto">
-      <table class="table w-full whitespace-nowrap">
+    <div class="table-container">
+      <table class="table">
         <thead>
           <tr>
             <th class="w-16">
@@ -134,17 +134,36 @@ function getRecentActionTarget() {
 }
 </script>
 <style scoped>
+.table-container {
+  overflow-x: auto;
+  white-space: nowrap;
+  max-width: none;
+  width: auto;
+
+  &::-webkit-scrollbar {
+    height: 8px;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background-color: rgba(0, 0, 0, 0.2);
+    border-radius: 4px;
+  }
+
+  &::-webkit-scrollbar-track {
+    background-color: rgba(0, 0, 0, 0.1);
+  }
+
+  &::-webkit-scrollbar-thumb:hover {
+    background-color: rgba(0, 0, 0, 0.3);
+  }
+}
+
 .table {
-  min-width: 768px;
-  width: 100%;
   border-collapse: collapse;
   background-color: #ffffff;
   border-top: 1px solid #e5e7eb;
-
-  tbody {
-    display: block;
-    min-height: 25vh;
-  }
+  width: max-content;
+  min-width: 100%;
 
   & th,
   & td {
@@ -160,10 +179,6 @@ function getRecentActionTarget() {
   }
 
   & tr {
-    display: table;
-    width: 100%;
-    table-layout: fixed;
-
     &:hover {
       background-color: #f9fafb;
     }

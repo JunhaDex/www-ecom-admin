@@ -56,6 +56,7 @@ export interface Product {
   productName: string
   description: string
   productPrice: number
+  imageUrls?: string[]
   status: string
   createdAt: Date
 }

@@ -26,7 +26,8 @@
         </template>
         <template #actions>
           <li>
-            <span class="dropdown-item">상품 수정</span>
+            <span class="dropdown-item" @click="updateProduct">상품 수정</span>
+            <span class="dropdown-item">판매 중지</span>
             <span class="dropdown-item text-danger" @click="deleteProduct">상품 삭제</span>
           </li>
         </template>
@@ -78,6 +79,12 @@ onMounted(async () => {
     ['productName', 'description', 'productPrice', 'status', 'createdAt'],
   )
 })
+
+async function updateProduct() {
+  const index = branchProductTable.value!.getRecentActionTarget()
+  const target = products.value.raw[index] as Product
+  await router.push({ name: 'product-update', params: { id: target.id } })
+}
 
 async function deleteProduct() {
   const index = branchProductTable.value!.getRecentActionTarget()

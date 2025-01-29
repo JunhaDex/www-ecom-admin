@@ -15,7 +15,7 @@
       </template>
       <template #actions>
         <li>
-          <span class="dropdown-item">공지 수정</span>
+          <span class="dropdown-item" @click="updateNotice">공지 수정</span>
           <span class="dropdown-item text-danger" @click="deleteNotice">공지사항 삭제</span>
         </li>
       </template>
@@ -63,6 +63,12 @@ onMounted(async () => {
     ['id', 'title', 'createdAt'],
   )
 })
+
+async function updateNotice() {
+  const index = noticeTable.value!.getRecentActionTarget()
+  const target = notices.value.raw[index] as Notice
+  await router.push({ name: 'notice-update', params: { id: target.id } })
+}
 
 async function deleteNotice() {
   const index = noticeTable.value!.getRecentActionTarget()

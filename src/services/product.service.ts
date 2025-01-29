@@ -11,8 +11,19 @@ export class ProductService extends ApiService {
     return this.unpackRes(res) as PaginatedResponse<Product>
   }
 
+  async getProduct(index: number): Promise<Product> {
+    const res = await this.client.get(`${index}`)
+    return this.unpackRes(res) as Product
+  }
+
   async createProduct(newProduct: FormData): Promise<void> {
     await this.client.post('new', newProduct, {
+      headers: { 'Content-Type': 'multipart/form-data' },
+    })
+  }
+
+  async updateProduct(index: number, product: FormData): Promise<void> {
+    await this.client.put(`${index}/update`, product, {
       headers: { 'Content-Type': 'multipart/form-data' },
     })
   }

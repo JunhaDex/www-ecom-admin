@@ -11,9 +11,7 @@
       >
         <template #control>
           <div class="flex justify-end mb-2">
-            <button class="btn btn-secondary mr-2">상태 업데이트</button>
-            <button class="btn btn-secondary mr-2">배송정보 등록</button>
-            <button class="btn btn-secondary">목록 최신화</button>
+            <button class="btn btn-secondary">배송정보 새로고침</button>
           </div>
           <div class="flex justify-start">
             <select class="select-box">
@@ -22,9 +20,13 @@
             <input type="text" class="flex-1 input ml-4" placeholder="검색어를 입력하세요" />
             <button class="btn btn-primary ml-4">검색</button>
           </div>
-          <div class="flex justify-start mt-2">
-            <button class="btn btn-primary">검색 필터추가 +</button>
-          </div>
+        </template>
+        <template #actions>
+          <li>
+            <span class="dropdown-item">주문 상세</span>
+            <span class="dropdown-item">배송 등록</span>
+            <span class="dropdown-item">상태 변경</span>
+          </li>
         </template>
       </DataTable>
     </div>
@@ -69,8 +71,7 @@ onMounted(async () => {
 
   orders.value = orderPageItemList(
     txData.list.map((itm) => {
-      const totalProductCount =
-        itm.products.reduce((total, product) => total + product.count, 0)
+      const totalProductCount = itm.products.reduce((total, product) => total + product.count, 0)
       return {
         ...itm,
         createdAt: dayjs(itm.createdAt).format('YYYY-MM-DD HH:mm'),

@@ -22,7 +22,7 @@
         <h2 class="text-xl font-semibold">Table</h2>
       </div>
       <div class="table-container w-full overflow-x-auto">
-        <table class="table w-full whitespace-nowrap">
+        <table class="table whitespace-nowrap">
           <thead>
             <tr>
               <th>지점명</th>

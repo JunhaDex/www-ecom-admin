@@ -22,7 +22,7 @@ const props = defineProps<{
   maxCount: number
 }>()
 
-defineExpose({ checkout })
+defineExpose({ checkout, reset })
 
 function handleFileChange() {
   console.log('handleFileChange')
@@ -40,6 +40,11 @@ function handleFileChange() {
 
 function checkout() {
   return listFile.value
+}
+
+function reset() {
+  listFile.value = []
+  listThumb.value = []
 }
 
 function clickFileInput() {

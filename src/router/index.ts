@@ -56,6 +56,12 @@ const router = createRouter({
           name: 'product-new',
           component: () => import('@/pages/product/New.vue'),
         },
+        {
+          path: ':id',
+          name: 'product-update',
+          props: true,
+          component: () => import('@/pages/product/New.vue'),
+        },
       ],
     },
     {
@@ -72,6 +78,12 @@ const router = createRouter({
           name: 'notice-new',
           component: () => import('@/pages/notice/New.vue'),
         },
+        {
+          path: ':id',
+          name: 'notice-update',
+          props: true,
+          component: () => import('@/pages/notice/New.vue'),
+        },
       ],
     },
     {
@@ -82,6 +94,12 @@ const router = createRouter({
           path: 'list',
           name: 'order-list',
           component: () => import('@/pages/order/List.vue'),
+        },
+        {
+          path: ':id/delivery',
+          name: 'order-delivery',
+          props: true,
+          component: () => import('@/pages/order/Delivery.vue'),
         },
       ],
     },
