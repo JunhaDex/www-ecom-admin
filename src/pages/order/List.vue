@@ -3,10 +3,11 @@
   <SafeArea>
     <div class="pt-8">
       <DataTable
+        ref="orderTable"
         title="주문관리"
         :columns="columns"
         :has-actions="false"
-        :items="orders"
+        :items="orders.display"
         :page-meta="txTablePage"
       >
         <template #control>
@@ -24,7 +25,11 @@
         <template #actions>
           <li>
             <span class="dropdown-item">주문 상세</span>
-            <span class="dropdown-item">배송 등록</span>
+          </li>
+          <li>
+            <span class="dropdown-item" @click="updateTracking">배송 등록</span>
+          </li>
+          <li>
             <span class="dropdown-item">상태 변경</span>
           </li>
         </template>
@@ -40,9 +45,11 @@ import AppFooter from '@/components/surfaces/AppFooter.vue'
 import DataTable from '@/components/display/DataTable.vue'
 import { onMounted, ref } from 'vue'
 import type { PageMeta } from '@/types/ui.type'
-import { orderPageItemList } from '@/utils/index.util'
+import { getTxStatus, orderPageItemList } from '@/utils/index.util'
 import dayjs from 'dayjs'
 import { TxService } from '@/services/tx.service'
+import type { TxAdminItem } from '@/types/service.type'
+import { useRouter } from 'vue-router'
 
 const columns = [
   '주문일',
@@ -57,7 +64,14 @@ const columns = [
   '택배사',
   '송장번호',
 ]
-const orders = ref([])
+
+const router = useRouter()
+const orders = ref({
+  raw: [],
+  display: [],
+})
+const orderTable = ref<typeof DataTable>()
+const txItems = ref<TxAdminItem[]>([])
 const txTablePage = ref<PageMeta>({
   totalCount: 0,
   pageNo: 1,
@@ -67,9 +81,10 @@ const txTablePage = ref<PageMeta>({
 const txSvc = new TxService()
 onMounted(async () => {
   const txData = await txSvc.listTx()
+  txItems.value = txData.list
   txTablePage.value = txData.meta
-
-  orders.value = orderPageItemList(
+  orders.value.raw = txData.list
+  orders.value.display = orderPageItemList(
     txData.list.map((itm) => {
       const totalProductCount = itm.products.reduce((total, product) => total + product.count, 0)
       return {
@@ -82,6 +97,7 @@ onMounted(async () => {
         paymentKey: itm.payment.paymentKey,
         courier: itm.shipment?.courier,
         trackingNo: itm.shipment?.trackingNo,
+        status: getTxStatus(itm.status),
       }
     }),
     [
@@ -99,4 +115,10 @@ onMounted(async () => {
     ],
   )
 })
+
+async function updateTracking() {
+  const index = orderTable.value!.getRecentActionTarget()
+  const target = orders.value.raw[index] as TxAdminItem
+  await router.push({ name: 'order-delivery', params: { id: target.id } })
+}
 </script>

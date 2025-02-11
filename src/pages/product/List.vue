@@ -16,13 +16,6 @@
               상품 추가
             </router-link>
           </div>
-          <div class="flex justify-start">
-            <select class="select-box">
-              <option value="name">상품명</option>
-            </select>
-            <input type="text" class="flex-1 input ml-4" placeholder="검색어를 입력하세요" />
-            <button class="btn btn-primary ml-4">검색</button>
-          </div>
         </template>
         <template #actions>
           <li>

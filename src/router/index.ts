@@ -1,5 +1,6 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import Home from '@/pages/Home.vue'
+import Login from '@/pages/Login.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -8,6 +9,11 @@ const router = createRouter({
       path: '/',
       name: 'home',
       component: Home,
+    },
+    {
+      path: '/login',
+      name: 'login',
+      component: Login,
     },
     {
       path: '/user',
@@ -104,6 +110,17 @@ const router = createRouter({
       ],
     },
     {
+      path: '/shipment',
+      redirect: '/shipment/list',
+      children: [
+        {
+          path: 'list',
+          name: 'shipment-list',
+          component: () => import('@/pages/shipment/List.vue'),
+        },
+      ],
+    },
+    {
       path: '/carrier',
       redirect: '/carrier/list',
       children: [
@@ -111,11 +128,6 @@ const router = createRouter({
           path: 'list',
           name: 'carrier-list',
           component: () => import('@/pages/carrier/List.vue'),
-        },
-        {
-          path: 'new',
-          name: 'carrier-new',
-          component: () => import('@/pages/carrier/New.vue'),
         },
       ],
     },

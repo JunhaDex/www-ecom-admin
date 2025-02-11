@@ -80,12 +80,17 @@ export interface NoticeCreateInput {
   content: string
 }
 
+export interface UpdateTrackingInput {
+  trackingNo: string
+  courierId: number
+}
+
 export interface TxAdminItem {
   id: number
   txName: string
   txNote: string
   status: number
-  payment: Payment
+  payment: Partial<Payment>
   user: {
     id: number
     userId: string
@@ -98,7 +103,7 @@ export interface TxAdminItem {
     count: number
     price: number
   }[]
-  shipment?: Shipment
+  shipment?: Partial<Shipment>
   createdAt: Date
 }
 

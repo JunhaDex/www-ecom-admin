@@ -15,7 +15,8 @@
         <router-link :to="{ name: 'product-list' }" class="menu-item">판매 상품관리</router-link>
         <router-link :to="{ name: 'notice-list' }" class="menu-item">공지사항 관리</router-link>
         <router-link :to="{ name: 'order-list' }" class="menu-item">주문 관리</router-link>
-        <router-link :to="{ name: 'carrier-list' }" class="menu-item">배송사 등록</router-link>
+        <router-link :to="{ name: 'shipment-list' }" class="menu-item">배송 관리</router-link>
+        <router-link :to="{ name: 'carrier-list' }" class="menu-item">배송사 관리</router-link>
         <router-link :to="{ name: 'admin-list' }" class="menu-item">관리자 목록</router-link>
       </div>
     </nav>

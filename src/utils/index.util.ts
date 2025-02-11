@@ -25,3 +25,22 @@ export function processQuillContent(htmlContent: string): string {
   }
   return result
 }
+
+export function getTxStatus(status: number): string {
+  switch (status) {
+    case 1:
+      return '결제완료'
+    case 2:
+      return '결제대기'
+    case 3:
+      return '배송중'
+    case 4:
+      return '배송완료'
+    case 5:
+      return '환불처리'
+    case 7:
+      return '거래취소'
+    default:
+      return '알 수 없음'
+  }
+}
