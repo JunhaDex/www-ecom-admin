@@ -13,21 +13,23 @@
           <UserAvatar
             :user="{
               uid: '1',
-              name: 'Admin',
+              name: '관리자',
               profileImage: '',
             }"
           />
         </template>
         <template #default>
+          <!--<li>-->
+          <!--  <a href="#" class="block px-4 py-2 hover:bg-gray-100">Profile</a>-->
+          <!--</li>-->
+          <!--<li>-->
+          <!--  <a href="#" class="block px-4 py-2 hover:bg-gray-100">Settings</a>-->
+          <!--</li>-->
+          <!--<hr class="my-1" />-->
           <li>
-            <a href="#" class="block px-4 py-2 hover:bg-gray-100">Profile</a>
-          </li>
-          <li>
-            <a href="#" class="block px-4 py-2 hover:bg-gray-100">Settings</a>
-          </li>
-          <hr class="my-1" />
-          <li>
-            <a href="#" class="block px-4 py-2 hover:bg-gray-100">Sign out</a>
+            <span class="block px-4 py-2 hover:bg-gray-100 text-danger" @click="logout">
+              로그아웃
+            </span>
           </li>
         </template>
       </Dropdown>
@@ -42,11 +44,19 @@ import UserAvatar from '@/components/display/UserAvatar.vue'
 import Dropdown from '@/components/inputs/Dropdown.vue'
 import SideMenu from '@/components/navigations/SideMenu.vue'
 import { ref } from 'vue'
+import { useAuthStore } from '@/stores/auth.store'
 
 const sideMenuOpen = ref(false)
+const authStore = useAuthStore()
 
 function toggleSideMenu() {
   sideMenuOpen.value = !sideMenuOpen.value
+}
+
+function logout() {
+  authStore.invalidate()
+  window.alert('로그아웃 되었습니다.')
+  window.location.href = '/login'
 }
 </script>
 <style scoped>

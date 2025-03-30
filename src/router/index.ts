@@ -1,14 +1,19 @@
 import { createRouter, createWebHistory } from 'vue-router'
-import Home from '@/pages/Home.vue'
+import UserList from '@/pages/user/List.vue'
 import Login from '@/pages/Login.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
+    // {
+    //   path: '/',
+    //   name: 'home',
+    //   component: Home,
+    // },
     {
       path: '/',
       name: 'home',
-      component: Home,
+      redirect: '/user/list',
     },
     {
       path: '/login',
@@ -22,7 +27,7 @@ const router = createRouter({
         {
           path: 'list',
           name: 'user-list',
-          component: () => import('@/pages/user/List.vue'),
+          component: UserList,
         },
         {
           path: 'new',
@@ -128,6 +133,11 @@ const router = createRouter({
           path: 'list',
           name: 'carrier-list',
           component: () => import('@/pages/carrier/List.vue'),
+        },
+        {
+          path: 'new',
+          name: 'carrier-new',
+          component: () => import('@/pages/carrier/New.vue'),
         },
       ],
     },
