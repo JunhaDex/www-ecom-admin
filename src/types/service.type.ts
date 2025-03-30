@@ -81,8 +81,8 @@ export interface NoticeCreateInput {
 }
 
 export interface UpdateTrackingInput {
-  trackingNo: string
-  courierId: number
+  trackingNo: string | null
+  courierId: number | null
 }
 
 export interface TxAdminItem {

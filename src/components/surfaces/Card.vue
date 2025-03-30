@@ -6,6 +6,5 @@
 <style scoped>
 .card {
   border-radius: 12px;
-  overflow: hidden;
 }
 </style>

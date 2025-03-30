@@ -4,7 +4,7 @@
       <!-- Left side - Menu Button -->
       <div class="flex items-center">
         <IconButton :prefix-icon="MenuIcon" class="btn-ghost" @click="toggleSideMenu" />
-        <h2 class="ml-4 text-xl font-bold">Dashboard</h2>
+        <h2 class="ml-4 text-xl font-bold">꽈백최선생 - 관리자</h2>
       </div>
 
       <!-- Right side - User Profile -->

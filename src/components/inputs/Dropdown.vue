@@ -1,28 +1,29 @@
 <template>
-  <details class="input-dropdown">
-    <summary>
-      <slot name="summary" />
-    </summary>
+  <div
+    class="input-dropdown"
+    :class="{ show: isOpen }"
+    tabindex="0"
+    @click="() => (isOpen = !isOpen)"
+    @blur="() => (isOpen = false)"
+  >
+    <slot name="summary" />
     <ul>
-      <slot />
+      <slot name="default" />
     </ul>
-  </details>
+  </div>
 </template>
+<script setup lang="ts">
+import { ref } from 'vue'
+
+const isOpen = ref(false)
+</script>
 <style scoped>
 .input-dropdown {
   position: relative;
 
-  & summary {
-    list-style: none;
-    outline: none;
-
-    &::-webkit-details-marker {
-      display: none;
-    }
-  }
-
   & ul {
     position: absolute;
+    display: none;
     right: 0;
     top: calc(100% + 0.5rem);
     width: 12rem;
@@ -34,8 +35,11 @@
     box-shadow: theme('boxShadow.md');
   }
 
-  &[open] ul {
-    opacity: 1;
+  &.show {
+    & ul {
+      opacity: 1;
+      display: block;
+    }
   }
 }
 </style>

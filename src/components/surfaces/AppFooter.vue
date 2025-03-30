@@ -1,7 +1,7 @@
 <template>
   <footer>
     <div class="px-4 py-3 text-center text-sm text-gray-600">
-      Copyright © 2024. All rights reserved.
+      Copyright © 주식회사 최선생. All Rights Reserved.
     </div>
   </footer>
 </template>

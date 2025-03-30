@@ -16,10 +16,17 @@ export class TxService extends ApiService {
     return this.unpackRes(res) as TxAdminItem
   }
 
-  async updateTxShipment(id: number, shipment: UpdateTrackingInput): Promise<void> {
+  async registerShipment(id: number, shipment: UpdateTrackingInput): Promise<void> {
     await this.client.put(`${id}/shipment`, {
       ...shipment,
       status: 3,
+    })
+  }
+
+  async updateShipment(id: number, status: number, shipment: UpdateTrackingInput): Promise<void> {
+    await this.client.put(`${id}/shipment`, {
+      ...shipment,
+      status,
     })
   }
 }

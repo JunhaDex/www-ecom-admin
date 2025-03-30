@@ -1,11 +1,11 @@
 <template>
   <div class="w-full overflow-x-auto">
     <div class="image-upload">
-      <div v-for="(img, idx) in listThumb" class="image-thumbnail" :key="idx">
+      <div v-for="(img, idx) in images" class="image-thumbnail" :key="idx">
         <img :src="img" alt="thumbnail" />
         <span class="btn-delete" @click="deleteImage(idx)">✕</span>
       </div>
-      <div v-if="maxCount >= listThumb.length" class="upload-box" @click="clickFileInput">
+      <div v-if="maxCount >= images.length" class="upload-box" @click="clickFileInput">
         이미지 업로드
       </div>
       <input type="file" multiple ref="fileSelectRef" @change="handleFileChange" />
@@ -13,26 +13,27 @@
   </div>
 </template>
 <script setup lang="ts">
-import { ref } from 'vue'
+import { computed, ref } from 'vue'
 
 const listFile = ref<File[]>([])
-const listThumb = ref<string[]>([])
 const fileSelectRef = ref<HTMLInputElement>()
 const props = defineProps<{
+  images: string[]
   maxCount: number
 }>()
 
+
+const emit = defineEmits(['addImage', 'removeImage'])
 defineExpose({ checkout, reset })
 
 function handleFileChange() {
-  console.log('handleFileChange')
   const listImage = fileSelectRef.value!.files
   const images = Array.from(listImage || [])
   images.forEach((img) => {
     listFile.value.push(img)
     const reader = new FileReader()
     reader.onload = (e) => {
-      listThumb.value.push(e.target?.result as string)
+      emit('addImage', e.target?.result as string)
     }
     reader.readAsDataURL(img)
   })
@@ -44,7 +45,6 @@ function checkout() {
 
 function reset() {
   listFile.value = []
-  listThumb.value = []
 }
 
 function clickFileInput() {
@@ -53,8 +53,8 @@ function clickFileInput() {
 }
 
 function deleteImage(idx: number) {
-  console.log('deleteImage', idx)
-  listThumb.value.splice(idx, 1)
+  // listThumb.value.splice(idx, 1)
+  emit('removeImage', idx)
   listFile.value.splice(idx, 1)
 }
 </script>

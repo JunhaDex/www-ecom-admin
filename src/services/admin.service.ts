@@ -21,7 +21,6 @@ export class AdminService extends ApiService {
 
   async loginAdmin(auth: { adminId: string; pwd: string }): Promise<void> {
     const res = await this.client.post('login', auth)
-    console.log(res.data)
     const cred = this.unpackRes(res) as { accessToken: string }
     this.authStore.setCredential(cred.accessToken)
   }

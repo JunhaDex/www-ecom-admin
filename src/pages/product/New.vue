@@ -6,7 +6,13 @@
         <h3 class="text-lg font-semibold mb-2">가맹점 정보</h3>
         <div class="input-wrap mb-4">
           <label>상품 이미지</label>
-          <ImageUploadInput :max-count="5" ref="fileUploadRef" />
+          <ImageUploadInput
+            :images="images"
+            :max-count="5"
+            ref="fileUploadRef"
+            @add-image="(val) => images.push(val)"
+            @remove-image="(idx) => images.splice(idx, 1)"
+          />
         </div>
         <div class="input-wrap mb-4">
           <label for="name" class="label label-lt">상품명</label>
@@ -75,9 +81,9 @@ async function submitProduct() {
 async function createProduct() {
   try {
     const formData = new FormData()
-    const images = fileUploadRef.value!.checkout() as File[]
-    if (images.length) {
-      images.forEach((image) => {
+    const added = fileUploadRef.value!.checkout() as File[]
+    if (added.length) {
+      added.forEach((image) => {
         formData.append('images', image)
       })
     }
@@ -101,6 +107,16 @@ async function createProduct() {
 async function updateProduct() {
   try {
     const formData = new FormData()
+    const added = fileUploadRef.value!.checkout() as File[]
+    if (added.length) {
+      added.forEach((image) => {
+        formData.append('images', image)
+      })
+    }
+    const origins = images.value.filter((url) => {
+      return url.includes('https://')
+    })
+    formData.append('imageUrls', JSON.stringify(origins))
     formData.append('productName', productInfo.value.productName)
     formData.append('productPrice', productInfo.value.productPrice.toString())
     formData.append('description', productInfo.value.description)

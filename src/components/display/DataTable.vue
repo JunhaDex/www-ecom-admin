@@ -135,7 +135,6 @@ function getRecentActionTarget() {
 </script>
 <style scoped>
 .table-container {
-  overflow-x: auto;
   white-space: nowrap;
   max-width: none;
   width: auto;

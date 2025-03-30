@@ -9,9 +9,12 @@
             <label>주문번호</label>
             <span>{{ txData.shipment?.txId }}</span>
           </li>
-          <li>
+          <li class="flex items-center">
             <label>주문상태</label>
-            <span>{{ getTxStatus(txData.status) }}</span>
+            <span>{{ getTxStatus(txData.status!) }}</span>
+            <button class="btn btn-secondary ml-2" @click="() => (isStatusOpen = true)">
+              상태변경
+            </button>
           </li>
           <li>
             <label>받는사람 (지점명)</label>
@@ -72,6 +75,13 @@
       </form>
     </CreateForm>
   </SafeArea>
+  <StatusModal
+    :is-open="isStatusOpen"
+    :tx-id="txData.id!"
+    :status="txData.status!"
+    @close-modal="() => (isStatusOpen = false)"
+    @update-status="updateTxStatus"
+  ></StatusModal>
 </template>
 <script setup lang="ts">
 import AppBar from '@/components/surfaces/AppBar.vue'
@@ -81,7 +91,8 @@ import { computed, onMounted, ref } from 'vue'
 import { TxService } from '@/services/tx.service'
 import { CourierService } from '@/services/courier.service'
 import type { Courier, TxAdminItem } from '@/types/service.type'
-import { getTxStatus } from '../../utils/index.util'
+import { getTxStatus } from '@/utils/index.util'
+import StatusModal from '@/components/feedbacks/modals/StatusModal.vue'
 
 const txSvc = new TxService()
 const courierSvc = new CourierService()
@@ -89,7 +100,10 @@ const props = defineProps<{
   id: string
 }>()
 const courierList = ref<Courier[]>([])
+const isStatusOpen = ref(false)
 const txData = ref<Partial<TxAdminItem>>({
+  id: 0,
+  status: 0,
   payment: {
     paidAmount: 0,
   },
@@ -105,9 +119,12 @@ const txData = ref<Partial<TxAdminItem>>({
   products: [],
   status: 2,
 })
-const userInput = ref({
+const userInput = ref<{
+  trackingNo: string
+  courierId: number | null
+}>({
   trackingNo: '',
-  courierId: '',
+  courierId: null,
 })
 
 const recipientName = computed(() => {
@@ -130,30 +147,50 @@ const recipientAddress = computed(() => {
 })
 const isEditable = ref(false)
 onMounted(async () => {
-  console.log(props.id)
   txData.value = await txSvc.getTx(Number(props.id))
   const courier = await courierSvc.listCourier()
   courierList.value.push(...courier.list)
   isEditable.value = txData.value.status === 1
+  userInput.value.trackingNo = txData.value.shipment?.trackingNo ?? ''
+  userInput.value.courierId = txData.value.shipment?.courierId ?? null
 })
 
 async function updateTracking(e: Event) {
   e.preventDefault()
-  if (!isEditable) return
+  if (!isEditable.value) return
   try {
     const txId = Number(props.id)
-    await txSvc.updateTxShipment(txId, {
+    await txSvc.registerShipment(txId, {
       trackingNo: userInput.value.trackingNo,
       courierId: Number(userInput.value.courierId),
     })
-    userInput.value = {
-      trackingNo: '',
-      courierId: '',
-    }
+    txData.value = await txSvc.getTx(Number(props.id))
+    isEditable.value = txData.value.status === 1
     alert('배송정보가 등록되었습니다.')
   } catch (err) {
     console.error(err)
     alert('배송정보 등록에 실패했습니다.')
+  }
+}
+
+async function updateTxStatus(params: { txId: number; status: number }) {
+  const shipment = {
+    trackingNo: txData.value.shipment?.trackingNo ?? null,
+    courierId: txData.value.shipment?.courierId ?? null,
+  }
+  try {
+    if (params.status === 1) {
+      await txSvc.updateShipment(params.txId, params.status, {
+        trackingNo: null,
+        courierId: null,
+      })
+    } else {
+      await txSvc.updateShipment(params.txId, params.status, shipment)
+    }
+    window.alert('주문 상태가 변경되었습니다.')
+    window.location.reload()
+  } catch (e) {
+    window.alert('주문 상태를 변경할 수 없습니다.')
   }
 }
 </script>

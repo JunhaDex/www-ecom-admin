@@ -24,19 +24,23 @@
         </template>
         <template #actions>
           <li>
-            <span class="dropdown-item">주문 상세</span>
+            <span class="dropdown-item" @click="updateTracking">주문 상세</span>
           </li>
           <li>
-            <span class="dropdown-item" @click="updateTracking">배송 등록</span>
-          </li>
-          <li>
-            <span class="dropdown-item">상태 변경</span>
+            <span class="dropdown-item" @click="openStatusModal">상태 변경</span>
           </li>
         </template>
       </DataTable>
     </div>
   </SafeArea>
   <AppFooter />
+  <StatusModal
+    :is-open="updateStatusCtx.isOpen"
+    :tx-id="updateStatusCtx.txId"
+    :status="updateStatusCtx.status"
+    @close-modal="() => (updateStatusCtx.isOpen = false)"
+    @update-status="updateTxStatus"
+  ></StatusModal>
 </template>
 <script setup lang="ts">
 import AppBar from '@/components/surfaces/AppBar.vue'
@@ -50,6 +54,7 @@ import dayjs from 'dayjs'
 import { TxService } from '@/services/tx.service'
 import type { TxAdminItem } from '@/types/service.type'
 import { useRouter } from 'vue-router'
+import StatusModal from '@/components/feedbacks/modals/StatusModal.vue'
 
 const columns = [
   '주문일',
@@ -79,6 +84,15 @@ const txTablePage = ref<PageMeta>({
   totalPage: 10,
 })
 const txSvc = new TxService()
+const updateStatusCtx = ref<{
+  isOpen: boolean
+  txId: number
+  status: number
+}>({
+  isOpen: false,
+  txId: 0,
+  status: 0,
+})
 onMounted(async () => {
   const txData = await txSvc.listTx()
   txItems.value = txData.list
@@ -120,5 +134,37 @@ async function updateTracking() {
   const index = orderTable.value!.getRecentActionTarget()
   const target = orders.value.raw[index] as TxAdminItem
   await router.push({ name: 'order-delivery', params: { id: target.id } })
+}
+
+async function openStatusModal() {
+  const index = orderTable.value!.getRecentActionTarget()
+  const tx = orders.value.raw[index] as TxAdminItem
+  updateStatusCtx.value.isOpen = true
+  updateStatusCtx.value.txId = tx.id
+  updateStatusCtx.value.status = tx.status
+}
+
+async function updateTxStatus(params: { txId: number; status: number }) {
+  const index = orderTable.value!.getRecentActionTarget()
+  const tx = orders.value.raw[index] as TxAdminItem
+  console.log(tx, params.txId)
+  const shipment = {
+    trackingNo: tx.shipment?.trackingNo ?? null,
+    courierId: tx.shipment?.courierId ?? null,
+  }
+  try {
+    if (params.status === 1) {
+      await txSvc.updateShipment(params.txId, params.status, {
+        trackingNo: null,
+        courierId: null,
+      })
+    } else {
+      await txSvc.updateShipment(params.txId, params.status, shipment)
+    }
+    window.alert('주문 상태가 변경되었습니다.')
+    window.location.reload()
+  } catch (e) {
+    window.alert('주문 상태를 변경할 수 없습니다.')
+  }
 }
 </script>
