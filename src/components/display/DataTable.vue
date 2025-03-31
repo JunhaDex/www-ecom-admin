@@ -84,7 +84,7 @@ import Dropdown from '@/components/inputs/Dropdown.vue'
 const props = defineProps<{
   title: string
   columns: string[]
-  items: never[]
+  items: any[]
   pageMeta: PageMeta
 }>()
 

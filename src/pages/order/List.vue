@@ -71,7 +71,10 @@ const columns = [
 ]
 
 const router = useRouter()
-const orders = ref({
+const orders = ref<{
+  raw: TxAdminItem[]
+  display: any[]
+}>({
   raw: [],
   display: [],
 })

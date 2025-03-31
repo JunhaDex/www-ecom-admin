@@ -95,11 +95,17 @@ const userColumns = ['가맹점명', '아이디', '대표자', '연락처', '유
 
 const toggleSetUserGroup = ref(false)
 const groupColumns = ['그룹명', '그룹 설명', '생성일']
-const users = ref({
+const users = ref<{
+  raw: BranchUser[]
+  display: any[]
+}>({
   raw: [],
   display: [],
 })
-const groups = ref({
+const groups = ref<{
+  raw: UserGroup[]
+  display: any[]
+}>({
   raw: [],
   display: [],
 })

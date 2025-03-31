@@ -90,7 +90,7 @@ import CreateForm from '@/components/display/CreateForm.vue'
 import { computed, onMounted, ref } from 'vue'
 import { TxService } from '@/services/tx.service'
 import { CourierService } from '@/services/courier.service'
-import type { Courier, TxAdminItem } from '@/types/service.type'
+import type { Courier, TxAdminItem, User } from '@/types/service.type'
 import { getTxStatus } from '@/utils/index.util'
 import StatusModal from '@/components/feedbacks/modals/StatusModal.vue'
 
@@ -103,19 +103,18 @@ const courierList = ref<Courier[]>([])
 const isStatusOpen = ref(false)
 const txData = ref<Partial<TxAdminItem>>({
   id: 0,
-  status: 0,
   payment: {
     paidAmount: 0,
   },
   shipment: {
-    txId: '',
+    txId: 0,
     address: '',
     recipientName: '',
     recipientPhone: '',
   },
   user: {
     branchName: '',
-  },
+  } as User,
   products: [],
   status: 2,
 })

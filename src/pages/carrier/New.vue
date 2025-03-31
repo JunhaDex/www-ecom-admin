@@ -38,8 +38,8 @@ const couierInfo = ref<BranchCourierCreate>({
 
 onBeforeRouteLeave(() => {
   let isDirty = false
-  for (const key in couierInfo.value) {
-    if (couierInfo.value[key]) {
+  for (const value of Object.values(couierInfo.value)) {
+    if (value !== '') {
       isDirty = true
       break
     }
@@ -72,7 +72,7 @@ async function submitCourier(e: Event) {
       courierName: '',
       apiUrl: '',
     }
-  } catch (e) {
+  } catch (e: any) {
     console.error(e.message.code)
     alert('새로운 배송사 생성에 실패했습니다.')
   }

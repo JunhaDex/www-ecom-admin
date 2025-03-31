@@ -68,8 +68,8 @@ onMounted(async () => {
 
 onBeforeRouteLeave(() => {
   let isDirty = false
-  for (const key in userInfo.value) {
-    if (userInfo.value[key]) {
+  for (const value of Object.values(userInfo.value)) {
+    if (value) {
       isDirty = true
       break
     }

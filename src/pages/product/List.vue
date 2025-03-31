@@ -43,7 +43,10 @@ import type { Product } from '@/types/service.type'
 import { useRouter } from 'vue-router'
 
 const columns = ['상품명', '상품설명', '가격', '판매상태', '생성일']
-const products = ref({
+const products = ref<{
+  raw: Product[]
+  display: any[]
+}>({
   raw: [],
   display: [],
 })

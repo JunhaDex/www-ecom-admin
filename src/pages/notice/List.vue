@@ -36,7 +36,10 @@ import type { Notice } from '@/types/service.type'
 
 const columns = ['등록번호', '제목', '작성일']
 const noticeTable = ref()
-const notices = ref({
+const notices = ref<{
+  raw: Notice[]
+  display: any[]
+}>({
   raw: [],
   display: [],
 })

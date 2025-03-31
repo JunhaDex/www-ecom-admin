@@ -93,7 +93,7 @@ async function createNotice() {
       content: '',
     }
     quill!.setContents([])
-  } catch (e) {
+  } catch (e: any) {
     console.error(e.message)
     alert('공지 생성에 실패했습니다.')
   }
@@ -104,7 +104,7 @@ async function updateNotice() {
     const noticeId = Number(props.id)
     await noticeSvc.updateNotice(noticeId, noticeInfo.value)
     alert('공지가 수정되었습니다.')
-  } catch (e) {
+  } catch (e: any) {
     console.error(e.message)
     alert('공지 수정에 실패했습니다.')
   }

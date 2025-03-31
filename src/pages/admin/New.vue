@@ -42,8 +42,8 @@ const adminInfo = ref<AdminCreateInput>({
 
 onBeforeRouteLeave(() => {
   let isDirty = false
-  for (const key in adminInfo.value) {
-    if (adminInfo.value[key]) {
+  for (const value of Object.values(adminInfo.value)) {
+    if (value !== '') {
       isDirty = true
       break
     }
@@ -84,7 +84,7 @@ async function submitUser(e: Event) {
       name: '',
       pwd: '',
     }
-  } catch (e) {
+  } catch (e: any) {
     console.error(e.message.code)
     alert('신규 관리자 생성에 실패했습니다.')
   }

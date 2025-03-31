@@ -12,7 +12,9 @@
       >
         <template #control>
           <div class="flex justify-end mb-2">
-            <router-link :to="{ name: 'carrier-new' }" class="btn btn-primary"> 배송사 등록</router-link>
+            <router-link :to="{ name: 'carrier-new' }" class="btn btn-primary">
+              배송사 등록</router-link
+            >
           </div>
           <div class="flex justify-start">
             <select class="select-box">
@@ -47,7 +49,10 @@ import type { Courier } from '@/types/service.type'
 import { useRouter } from 'vue-router'
 
 const columns = ['배송사명', 'API', '생성일']
-const couriers = ref({
+const couriers = ref<{
+  raw: Courier[]
+  display: any[]
+}>({
   raw: [],
   display: [],
 })
