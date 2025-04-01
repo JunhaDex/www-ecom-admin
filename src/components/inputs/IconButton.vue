@@ -14,11 +14,11 @@ const props = defineProps<{
   disabled?: boolean
 }>()
 const prefixIconStyle = computed(() => ({
-  '--icon-url': props.prefixIcon ? `url(${props.prefixIcon})` : 'none',
+  '--icon-url': props.prefixIcon ? `url("${props.prefixIcon}")` : 'none',
 }))
 
 const suffixIconStyle = computed(() => ({
-  '--icon-url': props.suffixIcon ? `url(${props.suffixIcon})` : 'none',
+  '--icon-url': props.suffixIcon ? `url("${props.suffixIcon}")` : 'none',
 }))
 </script>
 <style scoped>

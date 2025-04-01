@@ -2,7 +2,7 @@
   <div class="avatar flex items-center md:space-x-2">
     <!--<img :src="user.profileImage" :alt="user.name" class="w-8 h-8 rounded-full" />-->
     <span class="text-sm hidden md:inline">{{ user.name }}</span>
-    <i class="icon hidden md:inline" :style="`--icon-url: url(${DownIcon})`"></i>
+    <i class="icon hidden md:inline" :style="`--icon-url: url(&quot;${DownIcon}&quot;)`"></i>
   </div>
 </template>
 <script setup lang="ts">
