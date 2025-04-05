@@ -2,6 +2,22 @@
   <AppBar />
   <SafeArea>
     <div class="pt-8">
+      <Card class="bg-white shadow-md mb-8">
+        <div class="p-6 bg-natural">
+          <h2 class="text-xl font-semibold mb-4">배송관련 조치</h2>
+          <div class="flex mb-2">
+            <button class="btn btn-primary ml-4" @click="clickTrackShipment">
+              배송정보 새로고침
+            </button>
+            <button class="btn btn-secondary ml-4" @click="clickExportTxLog">
+              매출데이터 추출
+            </button>
+            <a class="btn btn-success ml-4" :href="sheetLocation" target="_blank">
+              매출데이터 열기
+            </a>
+          </div>
+        </div>
+      </Card>
       <DataTable
         ref="orderTable"
         title="주문관리"
@@ -11,9 +27,6 @@
         :page-meta="txTablePage"
       >
         <template #control>
-          <div class="flex justify-end mb-2">
-            <button class="btn btn-secondary">배송정보 새로고침</button>
-          </div>
           <div class="flex justify-start">
             <select class="select-box">
               <option>상품명</option>
@@ -55,6 +68,7 @@ import { TxService } from '@/services/tx.service'
 import type { TxAdminItem } from '@/types/service.type'
 import { useRouter } from 'vue-router'
 import StatusModal from '@/components/feedbacks/modals/StatusModal.vue'
+import Card from '@/components/surfaces/Card.vue'
 
 const columns = [
   '주문일',
@@ -69,7 +83,7 @@ const columns = [
   '택배사',
   '송장번호',
 ]
-
+const sheetLocation = import.meta.env.VITE_SHEET_LOCATION
 const router = useRouter()
 const orders = ref<{
   raw: TxAdminItem[]
@@ -169,5 +183,16 @@ async function updateTxStatus(params: { txId: number; status: number }) {
   } catch (e) {
     window.alert('주문 상태를 변경할 수 없습니다.')
   }
+}
+
+async function clickTrackShipment() {
+  await txSvc.trackShipment()
+  window.alert('배송정보가 새로고침 되었습니다.')
+  window.location.reload()
+}
+
+async function clickExportTxLog() {
+  await txSvc.exportTxLog()
+  window.alert('매출데이터를 동기화 하였습니다.')
 }
 </script>

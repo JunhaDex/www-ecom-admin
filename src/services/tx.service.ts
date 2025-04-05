@@ -29,4 +29,12 @@ export class TxService extends ApiService {
       status,
     })
   }
+
+  async trackShipment() {
+    await this.client.post('auto-track', {})
+  }
+
+  async exportTxLog() {
+    await this.client.post('export', {})
+  }
 }
